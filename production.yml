@@ -1,0 +1,19 @@
+version: "3.4"
+
+services:
+  node-server:
+    image: rasa-nlu-api:0.0.1
+    restart: unless-stopped
+    ports:
+      - 3030:3030
+    links:
+      - mongodb
+    envinronment:
+      PRODUCTION: true
+  mongodb:
+    image: mongo
+    restart: unless-stopped
+    env_file:
+      - mongodb.env
+    volumes:
+      - ./data-mongo:/data/db
