@@ -18,6 +18,7 @@ services:
       - MONGO_USERNAME=dev
       - MONGO_PASSWORD=dev
       - MONGO_DATABASE=rasa-nlu
+      - URL_GITHUB_IO=teste.com
   mongodb:
     image: mongo
     restart: unless-stopped

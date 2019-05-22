@@ -24,6 +24,7 @@
     "open": "^6.1.0",
     "path": "^0.12.7",
     "swagger-ui-express": "^4.0.4",
+    "yamljs": "^0.3.0",
     "yargs": "^13.2.2"
   },
   "devDependencies": {
