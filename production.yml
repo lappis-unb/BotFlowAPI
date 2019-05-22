@@ -8,8 +8,11 @@ services:
       - 3030:3030
     links:
       - mongodb
-    envinronment:
-      PRODUCTION: true
+    environment:
+      - URL_GITHUB_IO=
+      - URL_DOMAIN=
+    env_file:
+      - mongodb.env
   mongodb:
     image: mongo
     restart: unless-stopped
@@ -17,3 +20,17 @@ services:
       - mongodb.env
     volumes:
       - ./data-mongo:/data/db
+  nginx:
+    image: nginx:1.15-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - HOST_API=
+      - HOST_PORT=
+      - HOST_DOMAIN=
+    volumes:
+      - ./data/nginx:/etc/nginx/conf.d
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"

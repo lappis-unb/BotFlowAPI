@@ -5,7 +5,7 @@ module.exports.createIntent = async function createIntent(req, res, next) {
   jsonObject.projectName = req.params.projectName;
   try {
     const saveIntent = await Intent.collection.insertOne(jsonObject);
-    res.json(saveIntent.ops[0]);
+    res.json(saveIntent.ops);
   } catch (err) {
     res.json(err);
     next(err);

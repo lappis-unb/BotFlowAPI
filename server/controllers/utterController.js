@@ -5,7 +5,7 @@ module.exports.createUtter = async function createUtter(req, res, next) {
   jsonObject.projectName = req.params.projectName;
   try {
     const saveUtter = await Utter.collection.insertOne(jsonObject);
-    res.json(saveUtter.ops[0]);
+    res.json(saveUtter.ops);
   } catch (err) {
     next(err);
   }

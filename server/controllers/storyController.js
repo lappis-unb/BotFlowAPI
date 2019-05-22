@@ -5,7 +5,7 @@ module.exports.createStory = async function createStory(req, res, next) {
   jsonObject.projectName = req.params.projectName;
   try {
     const saveStory = await Story.collection.insertOne(jsonObject);
-    res.json(saveStory.ops[0]);
+    res.json(saveStory.ops);
   } catch (err) {
     next(err);
   }
