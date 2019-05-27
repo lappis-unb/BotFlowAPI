@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require('express')
 
-const app = express.Router();
+const app = express.Router()
 const {
   createUtter,
   getAllUtters,
   updateUtter,
-  deleteUtter,
-} = require('../controllers/utterController');
+  deleteUtter
+} = require('../controllers/utterController')
 
 /**
  * @typedef Utter
@@ -74,10 +74,10 @@ const {
 app
   .route('/:projectName/utter')
   .post(createUtter)
-  .get(getAllUtters);
+  .get(getAllUtters)
 app
   .route('/utter/:utterId')
   .put(updateUtter)
-  .delete(deleteUtter);
+  .delete(deleteUtter)
 
-module.exports = app;
+module.exports = app

@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require('express')
 
-const app = express.Router();
+const app = express.Router()
 const {
   createStory,
   getAllStories,
   updateStory,
-  deleteStory,
-} = require('../controllers/storyController.js');
+  deleteStory
+} = require('../controllers/storyController.js')
 
 /**
  * @typedef Story
@@ -74,10 +74,10 @@ const {
 app
   .route('/:projectName/story')
   .post(createStory)
-  .get(getAllStories);
+  .get(getAllStories)
 app
   .route('/story/:storyId')
   .put(updateStory)
-  .delete(deleteStory);
+  .delete(deleteStory)
 
-module.exports = app;
+module.exports = app

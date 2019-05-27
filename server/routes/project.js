@@ -1,7 +1,8 @@
-const express = require('express');
+const express = require('express')
+const { verify } = require('jsonwebtoken')
 
-const app = express.Router();
-const { getAllCollections, insertAllCollections } = require('../controllers/projectControler');
+const app = express.Router()
+const { getAllCollections, insertAllCollections } = require('../controllers/projectControler')
 
 /**
  * @typedef IntentsUttersStoriesArray
@@ -35,7 +36,26 @@ const { getAllCollections, insertAllCollections } = require('../controllers/proj
  * @returns {Error}  default - Unexpected error
  */
 
-app.get('/:projectName/info', getAllCollections);
-app.post('/:projectName/upload', insertAllCollections);
+const checkToken = (req, res, next) => {
+  const header = req.headers['Authorization']
 
-module.exports = app;
+  if (typeof header !== 'undefined') {
+    const bearer = header.split(' ')
+    const token = bearer[1]
+
+    req.token = token
+    verify(req.token, 'privatekey', (err, authorizedData) => {
+      if (err) {
+        res.sendStatus(403)
+      } else {
+        next(authorizedData)
+      }
+    })
+  } else {
+    res.sendStatus(403)
+  }
+}
+app.get('/:projectName/info', checkToken, getAllCollections)
+app.post('/:projectName/upload', checkToken, insertAllCollections)
+
+module.exports = app

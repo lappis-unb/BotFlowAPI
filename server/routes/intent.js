@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require('express')
 
-const app = express.Router();
+const app = express.Router()
 const {
   createIntent,
   getAllIntents,
   updateIntent,
-  deleteIntent,
-} = require('../controllers/intentController');
+  deleteIntent
+} = require('../controllers/intentController')
 
 /**
  * @typedef Entity
@@ -84,13 +84,13 @@ const {
 app
   .route('/:projectName/intent')
   .post(createIntent)
-  .get(getAllIntents);
+  .get(getAllIntents)
 app
   .route('/intent/:intentId')
   .put(updateIntent)
-  .delete(deleteIntent);
+  .delete(deleteIntent)
 
-module.exports = app;
+module.exports = app
 
 // paths:
 //   /{projectName}/upload:
