@@ -5,7 +5,8 @@ const {
   createStory,
   getAllStories,
   updateStory,
-  deleteStory
+  deleteStory,
+  generateStoryFile
 } = require('../controllers/storyController.js')
 
 /**
@@ -79,5 +80,9 @@ app
   .route('/story/:storyId')
   .put(updateStory)
   .delete(deleteStory)
+
+app
+  .route('/:projectName/story/generate_file')
+  .get(generateStoryFile)
 
 module.exports = app
