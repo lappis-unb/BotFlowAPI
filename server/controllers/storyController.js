@@ -74,7 +74,8 @@ module.exports.generateStoryFile = async function generateStoryFile(req, res, ne
         res.json({ success: false, message: err })
       }
 
-      res.json({success: true, message: "The story file was saved!"})
+      res.download(file)
+
     });
   } catch (err) {
     res.json({ success: false, message: err })
