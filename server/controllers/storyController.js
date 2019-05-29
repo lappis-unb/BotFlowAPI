@@ -61,18 +61,20 @@ module.exports.generateStoryFile = async function generateStoryFile(req, res, ne
     const getStory = await Story.find({ projectName })
 
     const storyFile = await buildStoryFile(getStory);
-    if (!fs.existsSync("/stories")) {
-      fs.mkdirSync("/stories");
+    if (!fs.existsSync("/" + projectName)) {
+      fs.mkdirSync("/" + projectName);
     }
-
-    const file = "/stories/" + projectName + ".md"
+    if (!fs.existsSync("/" + projectName + "/data")) {
+      fs.mkdirSync("/" + projectName + "/data");
+    }
+    const file = "/" + projectName + "/data/stories.md"
 
     fs.writeFile(file, storyFile, function (err) {
       if (err) {
         res.json({ success: false, message: err })
       }
 
-      res.json({success: true, message: "The file was saved!"})
+      res.json({success: true, message: "The story file was saved!"})
     });
   } catch (err) {
     res.json({ success: false, message: err })
