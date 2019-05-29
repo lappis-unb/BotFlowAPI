@@ -1,5 +1,5 @@
 const { hashSync } = require('bcrypt')
-const { User } = require('../models/userModel')
+const User = require('../models/userModel')
 
 module.exports.createUser = async function createUser (req, res, next) {
   const jsonObject = req.body

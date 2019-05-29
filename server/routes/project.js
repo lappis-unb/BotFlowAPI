@@ -55,7 +55,7 @@ const checkToken = (req, res, next) => {
     res.sendStatus(403)
   }
 }
-app.get('/:projectName/info', checkToken, getAllCollections)
-app.post('/:projectName/upload', checkToken, insertAllCollections)
+app.get('/:projectName/info', getAllCollections)
+app.post('/:projectName/upload', insertAllCollections)
 
 module.exports = app
