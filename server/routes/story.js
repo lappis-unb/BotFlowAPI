@@ -72,6 +72,14 @@ const {
  * @returns {Error}  default - Unexpected error
  */
 
+/**
+* @route GET /{projectName}/story/generate_file
+* @group Story - Operations about stories
+* @param {string} projectName.path.required - name of project - eg: testeRasa
+* @returns {Object.default} 200 - A success message
+* @returns {Error}  default - Unexpected error
+*/
+
 app
   .route('/:projectName/story')
   .post(createStory)
