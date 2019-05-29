@@ -4,18 +4,28 @@ const { Utter } = require('../models/utterModel')
 const fs = require('fs');
 
 const buildDomainFile = function buildDomainFile(intents, utters) {
-    var storyfile = ""
-    storyfile += "intents:\n"
+    var domainfile = ""
+    domainfile += "intents:\n"
     for (let i = 0; i < intents.length; i++) {
         const intent = intents[i];
-        storyfile += "  - " + intent["intent"] + "\n";
+        domainfile += "  - " + intent["intent"] + "\n";
     }
-    storyfile += "\actions:\n"
+
+    domainfile += "\nactions:\n"
     for (let i = 0; i < utters.length; i++) {
         const utter = utters[i]["nameUtter"];
-        storyfile += "  - " + utter + "\n";
+        domainfile += "  - " + utter + "\n";
     }
-    return storyfile
+
+    domainfile += "\ntemplates:\n"
+    for (let i = 0; i < utters.length; i++) {
+        const utter = utters[i]["nameUtter"];
+        const text = utters[i]["utter"];
+        domainfile += "  " + utter + ":\n";
+        domainfile += "    - text: | \n"
+        domainfile += "          " + text + "\n\n"
+    }
+    return domainfile
 }
 
 module.exports.generateDomainFile = async function generateDomainFile(req, res, next) {
