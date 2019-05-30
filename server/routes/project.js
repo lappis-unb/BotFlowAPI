@@ -1,61 +1,65 @@
 const express = require('express')
-const { verify } = require('jsonwebtoken')
 
 const app = express.Router()
-const { getAllCollections, insertAllCollections } = require('../controllers/projectControler')
+const {
+  createProject,
+  updateProject,
+  deleteProject
+} = require('../controllers/projectController.js')
 
 /**
- * @typedef IntentsUttersStoriesArray
- * @property {Array.<Intent>} Intent this models is inside in respectives routes
- * @property {Array.<Utter>} Utter this models is inside in respectives routes
- * @property {Array.<Story>} Story this models is inside in respectives routes
+ * @typedef Project
+ * @property {string} nameProject.required
+ * @property {string} descriptionProject.required
  */
 
 /**
- * @typedef IntentsUttersStoriesArrayGet
- * @property {Array<IntentGet>} Intent this models is inside in respectives routes
- * @property {Array<UtterGet>} Utter this models is inside in respectives routes
- * @property {Array<StoryGet>} Story this models is inside in respectives routes
+ * @typedef ReturnPut
+ * @property {string} n.required
+ * @property {string} nModified.required
+ * @property {string} ok.required
  */
 
 /**
- * This function comment is parsed by doctrine
- * @route GET /{projectName}/info
- * @group Project - Operations about intents, utters and stories
- * @param {string} projectName.path.required - name of project - eg: testeRasa
- * @returns {IntentsUttersStoriesArrayGet.model} 200 - An object with all intents, utters and stories
+ * @typedef ReturnDelete
+ * @property {string} n.required
+ * @property {string} deletedCount.required
+ * @property {string} ok.required
+ */
+
+/**
+ * @route POST /project
+ * @group Project - Operations about project
+ * @param {string} nameProject.path.required - name of project - eg: testeRasa
+ * @param {string} descriptionProject.path.required - description of project - eg: rasa-nlu
+ * @param {Project.model} project.body.required
+ * @returns {Array.<ProjectReturnGet>} 200 - An array of object of project included
  * @returns {Error}  default - Unexpected error
  */
 
 /**
- * @route POST /{projectName}/upload
- * @group Project - Operations about intents, utters and stories
- * @param {string} projectName.path.required - name of project - eg: testeRasa
- * @param {IntentsUttersStoriesArray.model} utter.body.required
- * @returns {IntentsUttersStoriesArrayGet.model} 200 -  An object with all intents, utters, and stories
+ * @route PUT /project/{projectId}
+ * @group Project - Operations about projects
+ * @param {string} projectId.path.required - id of project - eg: 1c24gdq2135s
+ * @param {Project.model} project.body.required
+ * @returns {ReturnPut.model} 200 - An object of numbers of documents modified and if status is ok
  * @returns {Error}  default - Unexpected error
  */
 
-const checkToken = (req, res, next) => {
-  const header = req.headers['Authorization']
+/**
+ * @route DELETE /project/{projectId}
+ * @group Project - Operations about projects
+ * @param {string} projectId.path.required - id of project - eg: 1c24gdq2135s
+ * @returns {ReturnDelete.model} 200 - An object of numbers of documents deleted and if status is ok
+ * @returns {Error}  default - Unexpected error
+ */
 
-  if (typeof header !== 'undefined') {
-    const bearer = header.split(' ')
-    const token = bearer[1]
-
-    req.token = token
-    verify(req.token, 'privatekey', (err, authorizedData) => {
-      if (err) {
-        res.sendStatus(403)
-      } else {
-        next(authorizedData)
-      }
-    })
-  } else {
-    res.sendStatus(403)
-  }
-}
-app.get('/:projectName/info', checkToken, getAllCollections)
-app.post('/:projectName/upload', checkToken, insertAllCollections)
+app
+  .route('/project')
+  .post(createProject)
+app
+  .route('/project/{projectId}')
+  .put(updateProject)
+  .delete(deleteProject)
 
 module.exports = app

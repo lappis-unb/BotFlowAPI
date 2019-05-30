@@ -2,7 +2,6 @@ const { Project } = require('../models/projectModel')
 
 module.exports.createProject = async function createProject (req, res, next) {
   const jsonObject = req.body
-  jsonObject.projectName = req.params.projectName
   try {
     const saveProject = await Project.collection.insertOne(jsonObject)
     res.json(saveProject.ops)
@@ -26,7 +25,7 @@ module.exports.updateProject = async function updateProject (req, res, next) {
 module.exports.deleteProject = async function deleteProject (req, res, next) {
   const { projectId } = req.params
   try {
-    const projectDoc = await Intent.deleteOne({ _id: projectId })
+    const projectDoc = await Project.deleteOne({ _id: projectId })
     res.json(projectDoc)
   } catch (err) {
     res.json(err)
