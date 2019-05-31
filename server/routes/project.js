@@ -58,7 +58,7 @@ app
   .route('/project')
   .post(createProject)
 app
-  .route('/project/{projectId}')
+  .route('/project/:projectId')
   .put(updateProject)
   .delete(deleteProject)
 
