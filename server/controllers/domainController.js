@@ -5,18 +5,37 @@ const fs = require('fs');
 
 const buildDomainFile = function buildDomainFile(intents, utters) {
     var domainfile = ""
-    domainfile += "intents:\n"
+    var intents_list = []
+    var entities = []
+
     for (let i = 0; i < intents.length; i++) {
         const intent = intents[i];
-        domainfile += "  - " + intent["intent"] + "\n";
+        if (!intents_list.includes(intent["nameIntent"])){
+            intents_list.push(intent["nameIntent"]);
+        }
+        if (intent["entities"] != undefined){
+            for (let j = 0; j < intent["entities"].length; j++){
+                if (!entities.includes(intent["entities"][j]["entity"])){
+                    entities.push(intent["entities"][j]["entity"])
+                }
+            }
+        }
     }
 
-    domainfile += "\nactions:\n"
-    for (let i = 0; i < utters.length; i++) {
-        const utter = utters[i]["nameUtter"];
-        domainfile += "  - " + utter + "\n";
+    domainfile = "intents:\n"
+    for (let i = 0; i < intents_list.length; i++) {
+        const intent = intents_list[i];
+        domainfile += "  - " + intent + "\n";
     }
 
+    if(entities.length > 0){
+        domainfile += "\nentities:\n"
+    }
+    for (let i = 0; i < entities.length; i++) {
+        const entity = entities[i];
+        domainfile += "  - " + entity + "\n";
+    }
+    
     domainfile += "\ntemplates:\n"
     for (let i = 0; i < utters.length; i++) {
         const utter = utters[i]["nameUtter"];
@@ -25,6 +44,13 @@ const buildDomainFile = function buildDomainFile(intents, utters) {
         domainfile += "    - text: | \n"
         domainfile += "          " + text + "\n\n"
     }
+
+    domainfile += "actions:\n"
+    for (let i = 0; i < utters.length; i++) {
+        const utter = utters[i]["nameUtter"];
+        domainfile += "  - " + utter + "\n";
+    }
+
     return domainfile
 }
 
@@ -44,8 +70,7 @@ module.exports.generateDomainFile = async function generateDomainFile(req, res, 
             if (err) {
                 res.json({ success: false, message: err })
             }
-
-            res.json({ success: true, message: "The domain file was saved!" })
+            res.download(file)
         });
     } catch (err) {
         res.json({ success: false, message: err })
