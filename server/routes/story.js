@@ -76,7 +76,7 @@ const {
 * @route GET /{projectName}/story/generate_file
 * @group Story - Operations about stories
 * @param {string} projectName.path.required - name of project - eg: testeRasa
-* @returns {Object.default} 200 - A success message
+* @returns {BinaryType} 200 - Stories file
 * @returns {Error}  default - Unexpected error
 */
 
