@@ -5,7 +5,8 @@ const {
   createStory,
   getAllStories,
   updateStory,
-  deleteStory
+  deleteStory,
+  generateStoryFile
 } = require('../controllers/storyController.js')
 
 /**
@@ -71,6 +72,14 @@ const {
  * @returns {Error}  default - Unexpected error
  */
 
+/**
+* @route GET /{projectName}/story/generate_file
+* @group Story - Operations about stories
+* @param {string} projectName.path.required - name of project - eg: testeRasa
+* @returns {BinaryType} 200 - Stories file
+* @returns {Error}  default - Unexpected error
+*/
+
 app
   .route('/:projectName/story')
   .post(createStory)
@@ -79,5 +88,9 @@ app
   .route('/story/:storyId')
   .put(updateStory)
   .delete(deleteStory)
+
+app
+  .route('/:projectName/story/generate_file')
+  .get(generateStoryFile)
 
 module.exports = app

@@ -1,4 +1,5 @@
 const { Story } = require('../models/storyModel')
+const fs = require('fs');
 
 module.exports.createStory = async function createStory (req, res, next) {
   const jsonObject = req.body
@@ -40,6 +41,44 @@ module.exports.deleteStory = async function deleteStory (req, res, next) {
     res.json(storyDoc)
   } catch (err) {
     res.json(err)
+    next(err)
+  }
+}
+
+const buildStoryFile = function buildStoryFile(stories){
+  var storyfile = ""
+  for (let i = 0; i < stories.length; i++) {
+    storyfile += "## Story for " + stories[i]["nameIntent"] + "\n";
+    storyfile += "* " + stories[i]["nameIntent"] + "\n";
+    storyfile += "  - " + stories[i]["nameUtter"] + "\n\n";
+  }
+  return storyfile
+}
+
+module.exports.generateStoryFile = async function generateStoryFile(req, res, next) {
+  const { projectName } = req.params
+  try {
+    const getStory = await Story.find({ projectName })
+
+    const storyFile = await buildStoryFile(getStory);
+    if (!fs.existsSync("/" + projectName)) {
+      fs.mkdirSync("/" + projectName);
+    }
+    if (!fs.existsSync("/" + projectName + "/data")) {
+      fs.mkdirSync("/" + projectName + "/data");
+    }
+    const file = "/" + projectName + "/data/stories.md"
+
+    fs.writeFile(file, storyFile, function (err) {
+      if (err) {
+        res.json({ success: false, message: err })
+      }
+
+      res.download(file)
+
+    });
+  } catch (err) {
+    res.json({ success: false, message: err })
     next(err)
   }
 }
