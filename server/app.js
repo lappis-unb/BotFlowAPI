@@ -12,6 +12,7 @@ const storyRoute = require('./routes/story')
 const projectRoute = require('./routes/project')
 const sessionRoute = require('./routes/session')
 const userRoute = require('./routes/user')
+const domainRoute = require('./routes/domain')
 
 /*
 const whitelist = [process.env.URL_GITHUB_IO, process.env.URL_DOMAIN]
@@ -57,4 +58,5 @@ app.use(cors(), storyRoute)
 app.use(cors(), projectRoute)
 app.use(cors(), sessionRoute)
 app.use(cors(), userRoute)
+app.use(cors(), domainRoute)
 module.exports = app
