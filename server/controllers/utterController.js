@@ -3,6 +3,9 @@ const { Utter } = require('../models/utterModel')
 module.exports.createUtter = async function createUtter (req, res, next) {
   const jsonObject = req.body
   jsonObject.projectName = req.params.projectName
+  for (let i = 0; i < jsonObject.utters.length; i++) {
+    jsonObject.utters[i].order = i
+  }
   try {
     const saveUtter = await Utter.collection.insertOne(jsonObject)
     res.json(saveUtter.ops)
