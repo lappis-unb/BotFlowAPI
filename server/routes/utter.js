@@ -9,15 +9,21 @@ const {
 } = require('../controllers/utterController')
 
 /**
+ * @typedef Text
+ * @property {string} utterText.required
+ * @property {integer} order.required
+ */
+
+/**
  * @typedef Utter
- * @property {string} utter.required
+ * @property {Array.<Text>} utters.required
  * @property {string} nameUtter.required
  */
 
 /**
  * @typedef UtterReturnGet
  * @property {string} _id.required
- * @property {string} utter.required
+ * @property {Array.<Text>} utters.required
  * @property {string} nameUtter.required
  * @property {string} projectName.required
  */
