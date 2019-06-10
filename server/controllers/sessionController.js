@@ -7,7 +7,6 @@ const path = require('path')
 const User = require('../models/userModel')
 const certPath = path.join(__dirname, '../private/jwtRS256.key')
 const privateKey = fs.readFileSync(certPath, 'utf8')
-console.log(privateKey)
 
 async function verifyUser ({ email, password }) {
   let result
