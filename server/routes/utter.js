@@ -10,20 +10,23 @@ const {
 
 /**
  * @typedef Text
- * @property {string} utterText.required
- * @property {integer} order.required
+ * @property {string} text.required
+ */
+/**
+ * @typedef UtterText
+ * @property {Array.<Text>} utterText.required
  */
 
 /**
  * @typedef Utter
- * @property {Array.<Text>} utters.required
+ * @property {Array.<UtterText>} utters.required
  * @property {string} nameUtter.required
  */
 
 /**
  * @typedef UtterReturnGet
  * @property {string} _id.required
- * @property {Array.<Text>} utters.required
+ * @property {Array.<UtterText>} utters.required
  * @property {string} nameUtter.required
  * @property {string} projectName.required
  */
