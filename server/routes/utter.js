@@ -44,7 +44,7 @@ const {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /{projectName}/utter
+ * @route GET project/{projectId}/utter
  * @group Utter - Operations about utters
  * @param {string} projectName.path.required - name of project - eg: testeRasa
  * @returns {Array.<UtterReturnGet>} 200 - An array of utters info
@@ -52,7 +52,7 @@ const {
  */
 
 /**
- * @route POST /{projectName}/utter
+ * @route POST project/{projectId}/utter
  * @group Utter - Operations about utters
  * @param {string} projectName.path.required - name of project - eg: testeRasa
  * @param {Utter.model} utter.body.required
@@ -61,7 +61,7 @@ const {
  */
 
 /**
- * @route PUT /utter/{utterId}
+ * @route PUT project/{projectId}/utter/{utterId}
  * @group Utter - Operations about utters
  * @param {string} utterId.path.required - id of utter - eg: 1c24gdq2135s
  * @param {Utter.model} utter.body.required
@@ -70,7 +70,7 @@ const {
  */
 
 /**
- * @route DELETE /utter/{utterId}
+ * @route DELETE project/{projectID}/utter/{utterId}
  * @group Utter - Operations about utters
  * @param {string} utterId.path.required - id of utter - eg: 1c24gdq2135s
  * @returns {ReturnDelete.model} 200 - An object of numbers of documents deleted and if status is ok
@@ -78,11 +78,11 @@ const {
  */
 
 app
-  .route('/:projectName/utter')
+  .route('project/:projectId/utter')
   .post(createUtter)
   .get(getAllUtters)
 app
-  .route('/utter/:utterId')
+  .route('project/projectId/utter/:utterId')
   .put(updateUtter)
   .delete(deleteUtter)
 

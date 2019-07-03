@@ -48,7 +48,7 @@ const {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /{projectName}/intent
+ * @route GET project/{projectId}/intent
  * @group Intent - Operations about intents
  * @param {string} projectName.path.required - name of project - eg: testeRasa
  * @returns {Array.<IntentReturnGet>} 200 - An array of intents info
@@ -56,7 +56,7 @@ const {
  */
 
 /**
- * @route POST /{projectName}/intent
+ * @route POST project/{projectId}/intent
  * @group Intent - Operations about intents
  * @param {string} projectName.path.required - name of project - eg: testeRasa
  * @param {Intent.model} intent.body.required
@@ -65,7 +65,7 @@ const {
  */
 
 /**
- * @route PUT /intent/{intentId}
+ * @route PUT project/{projectId}/intent/{intentId}
  * @group Intent - Operations about intents
  * @param {string} intentId.path.required - id of intent - eg: 1c24gdq2135s
  * @param {Intent.model} intent.body.required
@@ -74,7 +74,7 @@ const {
  */
 
 /**
- * @route DELETE /intent/{intentId}
+ * @route DELETE project/{projectId}/intent/{intentId}
  * @group Intent - Operations about intents
  * @param {string} intentId.path.required - id of intent - eg: 1c24gdq2135s
  * @returns {ReturnDelete.model} 200 - An object of numbers of documents deleted and if status is ok
@@ -82,11 +82,11 @@ const {
  */
 
 app
-  .route('/:projectName/intent')
+  .route('project/:projectId/intent')
   .post(createIntent)
   .get(getAllIntents)
 app
-  .route('/intent/:intentId')
+  .route('project/:projectId/intent/:intentId')
   .put(updateIntent)
   .delete(deleteIntent)
 
@@ -223,7 +223,7 @@ module.exports = app
 //                       type: string
 //                     intentName:
 //                       type: string
-//   /{projectName}/intent:
+//   project/{projectId}/intent:
 //     get:
 //       summary: Get a JSON with intents
 //       parameters:

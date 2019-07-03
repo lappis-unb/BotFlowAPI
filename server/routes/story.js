@@ -39,7 +39,7 @@ const {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /{projectName}/story
+ * @route GET project/{projectId}/story
  * @group Story - Operations about stories
  * @param {string} projectName.path.required - name of project - eg: testeRasa
  * @returns {Array.<StoryReturnGet>} 200 - An array of stories info
@@ -47,7 +47,7 @@ const {
  */
 
 /**
- * @route POST /{projectName}/story
+ * @route POST project/{projectId}/story
  * @group Story - Operations about stories
  * @param {string} projectName.path.required - name of project - eg: testeRasa
  * @param {Story.model} story.body.required
@@ -56,7 +56,7 @@ const {
  */
 
 /**
- * @route PUT /story/{storyId}
+ * @route PUT project/{projectId}/story/{storyId}
  * @group Story - Operations about stories
  * @param {string} storyId.path.required - id of utter - eg: 1c24gdq2135s
  * @param {Story.model} story.body.required
@@ -65,7 +65,7 @@ const {
  */
 
 /**
- * @route DELETE /story/{storyId}
+ * @route DELETE project/{projectId}/story/{storyId}
  * @group Story - Operations about stories
  * @param {string} storyId.path.required - id of utter - eg: 1c24gdq2135s
  * @returns {ReturnDelete.model} 200 - An object of numbers of documents deleted and if status is ok
@@ -73,7 +73,7 @@ const {
  */
 
 /**
-* @route GET /{projectName}/story/generate_file
+* @route GET project/{projectId}/story/generate_file
 * @group Story - Operations about stories
 * @param {string} projectName.path.required - name of project - eg: testeRasa
 * @returns {BinaryType} 200 - Stories file
@@ -81,16 +81,16 @@ const {
 */
 
 app
-  .route('/:projectName/story')
+  .route('project/:projectId/story')
   .post(createStory)
   .get(getAllStories)
 app
-  .route('/story/:storyId')
+  .route('project/:projectId/story/:storyId')
   .put(updateStory)
   .delete(deleteStory)
 
 app
-  .route('/:projectName/story/generate_file')
+  .route('project/:projectId/story/generate_file')
   .get(generateStoryFile)
 
 module.exports = app
