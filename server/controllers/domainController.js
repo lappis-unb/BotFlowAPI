@@ -42,7 +42,6 @@ const buildDomainFile = function buildDomainFile (intents, utters) {
     domainfile += '  ' + utter + ':\n'
     for (let j = 0; j < utters[i]['utters'].length; j++) {
       domainfile += '    - text: | \n'
-      console.log(utters[i]['utters'][j]['utterText'])
       for(let k = 0; k<utters[i]['utters'][j]['utterText'].length; k++){
         domainfile += '          ' + utters[i]['utters'][j]['utterText'][k]['text'] + '\n\n'
 
