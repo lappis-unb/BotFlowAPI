@@ -40,11 +40,12 @@ const buildDomainFile = function buildDomainFile (intents, utters) {
   for (let i = 0; i < utters.length; i++) {
     const utter = utters[i]['nameUtter']
     domainfile += '  ' + utter + ':\n'
-    utters[i]['utters'].sort((a, b) => a.order - b.order)
     for (let j = 0; j < utters[i]['utters'].length; j++) {
-      const text = utters[i]['utters'][j]
       domainfile += '    - text: | \n'
-      domainfile += '          ' + text['utterText'] + '\n\n'
+      for(let k = 0; k<utters[i]['utters'][j]['utterText'].length; k++){
+        domainfile += '          ' + utters[i]['utters'][j]['utterText'][k]['text'] + '\n\n'
+
+      }
     }
   }
 
