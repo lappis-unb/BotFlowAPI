@@ -35,12 +35,21 @@ module.exports.getAllUtters = async function getAllUtters (req, res, next) {
 
 module.exports.updateUtter = async function updateUtter (req, res, next) {
   const { utterId } = req.params
-  try {
-    const utterDoc = await Utter.updateOne({ _id: utterId }, req.body)
-    res.json(utterDoc)
-  } catch (err) {
-    res.json(err)
-    next(err)
+  var regex = /^(([A-Z]|[a-z]|[0-9]|_)*)$/;
+  var utterName = req.body.nameUtter;
+
+  if (regex.test(utterName)) {
+    try {
+      const utterDoc = await Utter.updateOne({ _id: utterId }, req.body)
+      res.json(utterDoc)
+    } catch (err) {
+      res.json(err)
+      next(err)
+    }
+  } else {
+    res.status(400).json({
+      message: "Utter name shouldn't have special characters or spaces"
+    })
   }
 }
 
