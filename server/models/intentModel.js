@@ -11,7 +11,7 @@ const Intent = function IntentModelCreate () {
   })
   const IntentSchema = new Schema(
     {
-      intent: { type: String, required: true },
+      intent: [{"text":{ type: String, required: true }}],
       nameIntent: { type: String, index: true, required: true },
       projectName: { type: String, required: true },
       entities: [EntitySchema]
