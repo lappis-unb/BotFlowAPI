@@ -28,7 +28,7 @@ const {
  * @property {string} _id.required
  * @property {Array.<UtterText>} utters.required
  * @property {string} nameUtter.required
- * @property {string} projectName.required
+ * @property {string} project_name.required
  */
 
 /**
@@ -47,17 +47,17 @@ const {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /{projectName}/utter
+ * @route GET /{project_name}/utter
  * @group Utter - Operations about utters
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @returns {Array.<UtterReturnGet>} 200 - An array of utters info
  * @returns {Error}  default - Unexpected error
  */
 
 /**
- * @route POST /{projectName}/utter
+ * @route POST /{project_name}/utter
  * @group Utter - Operations about utters
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @param {Utter.model} utter.body.required
  * @returns {Array.<UtterReturnGet>} 200 -  An array of object of utter included
  * @returns {Error}  default - Unexpected error
@@ -81,11 +81,11 @@ const {
  */
 
 app
-  .route('/:projectName/utter')
+  .route('/:project_name/utter')
   .post(createUtter)
   .get(getAllUtters)
 app
-  .route('/utter/:utterId')
+  .route('/utter/:utter_id')
   .put(updateUtter)
   .delete(deleteUtter)
 

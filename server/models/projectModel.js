@@ -5,8 +5,8 @@ const { Schema } = mongoose
 const Project = function projectModelCreate () {
   const ProjectSchema = new Schema(
     {
-      nameProject: { type: String, required: true },
-      descriptionProject: { type: String, required: true }
+      name: { type: String, required: true },
+      description: { type: String, required: true }
     },
     { collection: 'projects' }
   )

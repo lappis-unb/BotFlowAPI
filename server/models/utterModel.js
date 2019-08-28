@@ -2,12 +2,12 @@ const mongoose = require('../config/connectDB')
 
 const { Schema } = mongoose
 
-const Utter = function utterModelCreate () {
+const Utter = function utterModelCreate() {
   const UtterSchema = new Schema(
     {
-      utters: [{ utterText: [{text: {type: String, required: true}}]}],
-      nameUtter: { type: String, required: true },
-      projectName: { type: String, required: true }
+      alternatives: [{ contents: [{ text: { type: String, required: true } }] }],
+      name: { type: String, required: true },
+      project_name: { type: String, required: true }
     },
     { collection: 'utters' }
   )

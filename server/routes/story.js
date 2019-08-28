@@ -20,7 +20,7 @@ const {
  * @property {string} _id.required
  * @property {string} nameIntent.required
  * @property {string} nameUtter.required
- * @property {string} projectName.required
+ * @property {string} project_name.required
  */
 
 /**
@@ -39,17 +39,17 @@ const {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /{projectName}/story
+ * @route GET /{project_name}/story
  * @group Story - Operations about stories
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @returns {Array.<StoryReturnGet>} 200 - An array of stories info
  * @returns {Error}  default - Unexpected error
  */
 
 /**
- * @route POST /{projectName}/story
+ * @route POST /{project_name}/story
  * @group Story - Operations about stories
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @param {Story.model} story.body.required
  * @returns {Array.<StoryReturnGet>} 200 - An array of object of story included
  * @returns {Error}  default - Unexpected error
@@ -73,24 +73,24 @@ const {
  */
 
 /**
-* @route GET /{projectName}/story/generate_file
+* @route GET /{project_name}/story/generate_file
 * @group Story - Operations about stories
-* @param {string} projectName.path.required - name of project - eg: testeRasa
+* @param {string} project_name.path.required - name of project - eg: testeRasa
 * @returns {BinaryType} 200 - Stories file
 * @returns {Error}  default - Unexpected error
 */
 
 app
-  .route('/:projectName/story')
+  .route('/:project_name/story')
   .post(createStory)
   .get(getAllStories)
 app
-  .route('/story/:storyId')
+  .route('/story/:story_id')
   .put(updateStory)
   .delete(deleteStory)
 
 app
-  .route('/:projectName/story/generate_file')
+  .route('/:project_name/story/generate_file')
   .get(generateStoryFile)
 
 module.exports = app

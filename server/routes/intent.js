@@ -28,7 +28,7 @@ const {
  * @property {string} _id.required
  * @property {string} intent.required
  * @property {string} nameIntent.required
- * @property {string} projectName.required
+ * @property {string} project_name.required
  * @property {Array.<Entity>} entities
  */
 
@@ -48,17 +48,17 @@ const {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /{projectName}/intent
+ * @route GET /{project_name}/intent
  * @group Intent - Operations about intents
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @returns {Array.<IntentReturnGet>} 200 - An array of intents info
  * @returns {Error}  default - Unexpected error
  */
 
 /**
- * @route POST /{projectName}/intent
+ * @route POST /{project_name}/intent
  * @group Intent - Operations about intents
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @param {Intent.model} intent.body.required
  * @returns {Array.<IntentReturnGet>} 200 - An array of object of utter included
  * @returns {Error}  default - Unexpected error
@@ -82,23 +82,23 @@ const {
  */
 
 app
-  .route('/:projectName/intent')
+  .route('/:project_name/intent')
   .post(createIntent)
   .get(getAllIntents)
 app
-  .route('/intent/:intentId')
+  .route('/intent/:intent_id')
   .put(updateIntent)
   .delete(deleteIntent)
 
 module.exports = app
 
 // paths:
-//   /{projectName}/upload:
+//   /{project_name}/upload:
 //     post:
 //       summary: Post a json with stories, intents and utters
 //       parameters:
 //         - in: path
-//           name: projectName
+//           name: project_name
 //           type: string
 //           required: true
 //       description: Post a list containing an array of stories, intents and utters of an project
@@ -158,12 +158,12 @@ module.exports = app
 //                       type: string
 //                     intentName:
 //                       type: string
-//   /{projectName}/info:
+//   /{project_name}/info:
 //     get:
 //       summary: Get a json with stories, intents and utters
 //       parameters:
 //         - in: path
-//           name: projectName
+//           name: project_name
 //           type: string
 //           required: true
 //       description: Get a list containing an array of stories, intents and utters of an project
@@ -223,12 +223,12 @@ module.exports = app
 //                       type: string
 //                     intentName:
 //                       type: string
-//   /{projectName}/intent:
+//   /{project_name}/intent:
 //     get:
 //       summary: Get a JSON with intents
 //       parameters:
 //         - in: path
-//           name: projectName
+//           name: project_name
 //           type: string
 //           required: true
 //       description: Get a JSON with all intents of a project
@@ -263,7 +263,7 @@ module.exports = app
 //       summary: Post a JSON with intent
 //       parameters:
 //         - in: path
-//           name: projectName
+//           name: project_name
 //           type: string
 //           required: true
 //       description: Post a JSON with intent of a project

@@ -2,7 +2,7 @@ const mongoose = require('../config/connectDB')
 
 const { Schema } = mongoose
 
-const Intent = function IntentModelCreate () {
+const Intent = function IntentModelCreate() {
   const EntitySchema = new Schema({
     start: { type: Number, required: true },
     end: { type: Number, required: true },
@@ -11,9 +11,9 @@ const Intent = function IntentModelCreate () {
   })
   const IntentSchema = new Schema(
     {
-      intent: [{"text":{ type: String, required: true }}],
-      nameIntent: { type: String, index: true, required: true },
-      projectName: { type: String, required: true },
+      questions: [{ text: { type: String, required: true } }],
+      name: { type: String, index: true, required: true },
+      project_name: { type: String, required: true },
       entities: [EntitySchema]
     },
     { collection: 'intents' }

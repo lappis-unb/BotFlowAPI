@@ -1,47 +1,46 @@
 const { Utter } = require('../models/utterModel')
 
-module.exports.createUtter = async function createUtter (req, res, next) {
-  const jsonObject = req.body
-  jsonObject.projectName = req.params.projectName
-  
-  var regex = /^(([A-Z]|[a-z]|[0-9]|_)*)$/;
-  var utterName = jsonObject.nameUtter;
+module.exports.createUtter = async function createUtter(req, res, next) {
+  const json_object = req.body
+  json_object.project_name = req.params.project_name
 
-  if (regex.test(utterName)) {
-  
+  let regex = (/^(([A-Z]|[a-z]|[0-9]|_)*)$/)
+  let name = json_object.name
+
+  if (regex.test(name)) {
     try {
-      const saveUtter = await Utter.collection.insertOne(jsonObject)
-      res.json(saveUtter.ops)
+      const save_utter = await Utter.collection.insertOne(json_object)
+      res.json(save_utter.ops)
     } catch (err) {
       next(err)
     }
-  }else{
+  } else {
     res.status(400).json({
       message: "Utter name shouldn't have special characters or spaces"
     })
   }
 }
 
-module.exports.getAllUtters = async function getAllUtters (req, res, next) {
-  const { projectName } = req.params
+module.exports.getAllUtters = async function getAllUtters(req, res, next) {
+  const { project_name } = req.params
   try {
-    const getUtter = await Utter.find({ projectName })
-    res.json(getUtter)
+    const get_utter = await Utter.find({ project_name })
+    res.json(get_utter)
   } catch (err) {
     res.json(err)
     next(err)
   }
 }
 
-module.exports.updateUtter = async function updateUtter (req, res, next) {
-  const { utterId } = req.params
+module.exports.updateUtter = async function updateUtter(req, res, next) {
+  const { utter_id } = req.params
   var regex = /^(([A-Z]|[a-z]|[0-9]|_)*)$/;
-  var utterName = req.body.nameUtter;
+  var name = req.body.name;
 
-  if (regex.test(utterName)) {
+  if (regex.test(name)) {
     try {
-      const utterDoc = await Utter.updateOne({ _id: utterId }, req.body)
-      res.json(utterDoc)
+      const utter_doc = await Utter.updateOne({ _id: utter_id }, req.body)
+      res.json(utter_doc)
     } catch (err) {
       res.json(err)
       next(err)
@@ -53,11 +52,11 @@ module.exports.updateUtter = async function updateUtter (req, res, next) {
   }
 }
 
-module.exports.deleteUtter = async function deleteUtter (req, res, next) {
-  const { utterId } = req.params
+module.exports.deleteUtter = async function deleteUtter(req, res, next) {
+  const { utter_id } = req.params
   try {
-    const utterDoc = await Utter.deleteOne({ _id: utterId })
-    res.json(utterDoc)
+    const utter_doc = await Utter.deleteOne({ _id: utter_id })
+    res.json(utter_doc)
   } catch (err) {
     res.json(err)
     next(err)

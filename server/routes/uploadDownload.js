@@ -20,17 +20,17 @@ const { getAllCollections, insertAllCollections } = require('../controllers/uplo
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /{projectName}/info
+ * @route GET /{project_name}/info
  * @group Project - Operations about intents, utters and stories
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @returns {IntentsUttersStoriesArrayGet.model} 200 - An object with all intents, utters and stories
  * @returns {Error}  default - Unexpected error
  */
 
 /**
- * @route POST /{projectName}/upload
+ * @route POST /{project_name}/upload
  * @group Project - Operations about intents, utters and stories
- * @param {string} projectName.path.required - name of project - eg: testeRasa
+ * @param {string} project_name.path.required - name of project - eg: testeRasa
  * @param {IntentsUttersStoriesArray.model} utter.body.required
  * @returns {IntentsUttersStoriesArrayGet.model} 200 -  An object with all intents, utters, and stories
  * @returns {Error}  default - Unexpected error
@@ -55,7 +55,7 @@ const checkToken = (req, res, next) => {
     res.sendStatus(403)
   }
 }
-app.get('/:projectName/info', checkToken, getAllCollections)
-app.post('/:projectName/upload', checkToken, insertAllCollections)
+app.get('/:project_name/info', checkToken, getAllCollections)
+app.post('/:project_name/upload', checkToken, insertAllCollections)
 
 module.exports = app

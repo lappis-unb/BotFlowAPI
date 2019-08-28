@@ -1,11 +1,11 @@
 const { Intent } = require('../models/intentModel')
 
 module.exports.createIntent = async function createIntent (req, res, next) {
-  const jsonObject = req.body
-  jsonObject.projectName = req.params.projectName
+  const json_object = req.body
+  json_object.project_name = req.params.project_name
   try {
-    const saveIntent = await Intent.collection.insertOne(jsonObject)
-    res.json(saveIntent.ops)
+    const save_intent = await Intent.collection.insertOne(json_object)
+    res.json(save_intent.ops)
   } catch (err) {
     res.json(err)
     next(err)
@@ -13,10 +13,10 @@ module.exports.createIntent = async function createIntent (req, res, next) {
 }
 
 module.exports.getAllIntents = async function getAllIntents (req, res, next) {
-  const { projectName } = req.params
+  const { project_name } = req.params
   try {
-    const getIntent = await Intent.find({ projectName })
-    res.json(getIntent)
+    const get_intent = await Intent.find({ project_name })
+    res.json(get_intent)
   } catch (err) {
     res.json(err)
     next(err)
@@ -24,10 +24,10 @@ module.exports.getAllIntents = async function getAllIntents (req, res, next) {
 }
 
 module.exports.updateIntent = async function updateIntent (req, res, next) {
-  const { intentId } = req.params
+  const { intent_id } = req.params
   try {
-    const intentDoc = await Intent.updateOne({ _id: intentId }, req.body)
-    res.json(intentDoc)
+    const intent_doc = await Intent.updateOne({ _id: intent_id }, req.body)
+    res.json(intent_doc)
   } catch (err) {
     res.json(err)
     next(err)
@@ -35,10 +35,10 @@ module.exports.updateIntent = async function updateIntent (req, res, next) {
 }
 
 module.exports.deleteIntent = async function deleteIntent (req, res, next) {
-  const { intentId } = req.params
+  const { intent_id } = req.params
   try {
-    const intentDoc = await Intent.deleteOne({ _id: intentId })
-    res.json(intentDoc)
+    const intent_doc = await Intent.deleteOne({ _id: intent_id })
+    res.json(intent_doc)
   } catch (err) {
     res.json(err)
     next(err)
