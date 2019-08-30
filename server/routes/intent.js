@@ -17,8 +17,13 @@ const {
  */
 
 /**
+* @typedef Text
+* @property {string} text.required
+*/
+
+/**
  * @typedef Intent
- * @property {string} intent.required
+ * @property {Array.<Text>} intent.required
  * @property {string} nameIntent.required
  * @property {Array.<Entity>} entities
  */
@@ -26,7 +31,7 @@ const {
 /**
  * @typedef IntentReturnGet
  * @property {string} _id.required
- * @property {string} intent.required
+ * @property {Array.<Text>} intent.required
  * @property {string} nameIntent.required
  * @property {string} projectName.required
  * @property {Array.<Entity>} entities
