@@ -1,0 +1,4 @@
+django ~= 2.2.5
+djangorestframework ~= 3.10.2
+toolz ~= 0.10.0
+django-boogie ~= 0.13.3
