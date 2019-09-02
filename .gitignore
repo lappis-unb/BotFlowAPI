@@ -1,6 +1,9 @@
-package-lock.json
-node_modules/
-yarn*
-*.log
-*.key
-*.pub
+__pycache__/
+*.egg-info/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.dll
+*.egg
+*.sqlite3
