@@ -13,6 +13,7 @@ services:
     volumes:
       - ./src:/src
     environment:
+      - PYTHONUNBUFFERED=True
       - MONGO_USERNAME=dev
       - MONGO_PASSWORD=dev
       - MONGO_DATABASE=botflowapi
