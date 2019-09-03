@@ -16,9 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from boogie.rest import rest_api
+from api.urls import urlpatterns
 
 urlpatterns = [
  path('admin/', admin.site.urls),
- path('', include(rest_api.urls))
+ path('', include(urlpatterns))
 ]
