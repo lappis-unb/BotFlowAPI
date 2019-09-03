@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Project
+from api.models.project import ProjectSerializer
 import json
 
 def request_to_dict(request):
@@ -15,8 +16,9 @@ class ListProjects(APIView):
         if project_id:
             project = get_object_or_404(Project, pk=project_id)
             return Response({'name': project.name, 'description': project.description})
-
-        return Response({'projects': None})
+        
+        projects = ProjectSerializer(Project.objects.all(), many=True).data
+        return Response({'projects': projects})
 
     def post(self, request, project_id=None, format=None):
         data = request_to_dict(request)
