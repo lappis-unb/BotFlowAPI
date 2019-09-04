@@ -12,6 +12,7 @@ class Intent(models.Model):
     objects = models.DjongoManager()
 
 class IntentSerializer(serializers.ModelSerializer):
+    samples = serializers.ListField()
     class Meta:
         model = Intent
         fields = ['id', 'name', 'samples']
