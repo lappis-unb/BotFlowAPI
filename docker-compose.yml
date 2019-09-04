@@ -1,30 +1,29 @@
 version: "3.4"
 
 services:
-  node-server:
+  django:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
-      target: node
-    restart: unless-stopped
+    command: ./runserver.sh
     ports:
-      - 3030:3030
+      - 8000:8000
     links:
       - mongodb
     volumes:
-      - ./server/:/usr/app/server/
-      - /server/node_modules
+      - ./src:/src
     environment:
+      - PYTHONUNBUFFERED=True
       - MONGO_USERNAME=dev
       - MONGO_PASSWORD=dev
-      - MONGO_DATABASE=rasa-nlu
-      - URL_GITHUB_IO=localhost:3000
+      - MONGO_DATABASE=botflowapi
+      - MONGO_HOST=mongodb
   mongodb:
     image: mongo
     restart: unless-stopped
     environment:
       - MONGO_INITDB_ROOT_USERNAME=dev
       - MONGO_INITDB_ROOT_PASSWORD=dev
-      - MONGO_INITDB_DATABASE=rasa-nlu
+      - MONGO_INITDB_DATABASE=botflowapi
     ports:
       - 27017:27017
