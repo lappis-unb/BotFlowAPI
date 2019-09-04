@@ -1,9 +1,18 @@
 from djongo import models
-from boogie.rest import rest_api
+from rest_framework import serializers
+from .project import Project
 
 class Utter(models.Model):
     name = models.TextField()
-    possibilities = models.DictField(default={'list':[]})
-    project = models.ObjectIdField(blank=False)
+    multiple_alternatives = models.BooleanField(default=False)
+    alternatives = models.ListField(default=[])
+    project = models.EmbeddedModelField(
+        model_container=Project
+    )
 
     objects = models.DjongoManager()
+
+class UtterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Utter
+        fields = ['id', 'name', 'multiple_alternatives', 'alternatives']
