@@ -13,7 +13,7 @@ class ListProjects(APIView):
             return Response(ProjectSerializer(project).data)
         
         projects = ProjectSerializer(Project.objects.all(), many=True).data
-        return Response({'projects': projects})
+        return Response(projects)
 
     def post(self, request, project_id=None, format=None):
         data = request_to_dict(request)
