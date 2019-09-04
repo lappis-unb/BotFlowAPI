@@ -13,7 +13,9 @@ class Utter(models.Model):
     objects = models.DjongoManager()
 
 class UtterSerializer(serializers.ModelSerializer):
-    alternatives = serializers.ListField()
+    alternatives = serializers.ListField(
+        child=serializers.ListField()
+    )
     class Meta:
         model = Utter
         fields = ['id', 'name', 'multiple_alternatives', 'alternatives']

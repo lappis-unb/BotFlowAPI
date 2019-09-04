@@ -22,7 +22,7 @@ class ListUtters(APIView):
             many=True
         ).data
 
-        return Response({'utters': utters})
+        return Response(utters)
 
     def post(self, request, project_id=None, utter_id=None, format=None):
         if not project_id:

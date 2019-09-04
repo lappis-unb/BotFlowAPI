@@ -21,7 +21,7 @@ class ListIntents(APIView):
             many=True
         ).data
 
-        return Response({'intents': intents})
+        return Response(intents)
 
     def post(self, request, project_id=None, intent_id=None, format=None):
         if not project_id:
