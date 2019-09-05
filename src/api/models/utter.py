@@ -5,6 +5,7 @@ from .project import Project
 class Utter(models.Model):
     name = models.TextField()
     alternatives = models.ListField(default=[])
+    multiple_alternatives = models.BooleanField(blank=False, default=False)
     project = models.EmbeddedModelField(
         model_container=Project
     )
@@ -17,4 +18,4 @@ class UtterSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = Utter
-        fields = ['id', 'name', 'alternatives']
+        fields = ['id', 'name', 'multiple_alternatives', 'alternatives']
