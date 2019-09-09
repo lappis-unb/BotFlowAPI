@@ -2,7 +2,10 @@ from .models import Story, Intent, Utter
 
 
 class StoryParser:
-    
+    """
+    Generate a markdown string from a given
+    story object.
+    """
     def parse(self, story: Story):
         name = f'## {story.name}\n'
         content = ''
@@ -25,3 +28,18 @@ class StoryParser:
     
     def _utter_parser(self, utter : Utter):
         return f'- {utter}\n'
+
+
+class IntentParser:
+    """
+    Generate a markdown string from a given
+    intent object.
+    """
+    def parse(self, intent: Intent):
+        name = f'## intent:{intent.name}\n'
+        content = ''
+
+        for s in intent.samples:
+            content += f'- {s}\n'
+
+        return name + content
