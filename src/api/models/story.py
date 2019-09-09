@@ -3,7 +3,8 @@ from boogie.rest import rest_api
 from .project import Project
 
 class Story(models.Model):
-    content = models.DictField(default={'list':[]})
+    name = models.TextField(default="")
+    content = models.ListField(default=[])
     project = models.EmbeddedModelField(
         model_container=Project
     )
