@@ -1,8 +1,11 @@
 from djongo import models
-from .project import Project
+from . import Project, Intent
 
 class Story(models.Model):
-    content = models.DictField(default={'list':[]})
+    name = models.TextField()
+    intents = models.ArrayModelField(
+        model_container=Intent
+    )
     project = models.EmbeddedModelField(
         model_container=Project
     )
