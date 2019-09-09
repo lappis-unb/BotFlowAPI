@@ -1,5 +1,4 @@
 from djongo import models
-from boogie.rest import rest_api
 from .project import Project
 
 class Story(models.Model):
