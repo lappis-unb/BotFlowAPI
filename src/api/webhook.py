@@ -18,18 +18,18 @@ def stories_webhook(sender, instance, **kwargs):
         try:
             requests.post(url)
         except Exception as e:
-            print(f'An error ocurred during webhook communication {e}!')
+            print(f'An error ocurred during "STORIES" webhook communication {e}!')
 
 
-#@receiver([post_save, post_delete], sender=Intent)
-#@receiver([post_save, post_delete], sender=Story)
-def actions_webhook(sender, instance, **kwargs):
-    data = webhook_data('actions', ACTIONS_URL)
-    [requests.post(url, data) for url in settings.WEB_HOOK_URLS] 
+@receiver([post_save, post_delete], sender=Intent)
+def intents_webhook(sender, instance, **kwargs):
+    data = webhook_data('intents', reverse('intents-file'), kwargs={'project_id': instance.project.id})
 
-
-def intent_webhook():
-    pass
+    for url in settings.WEBHOOK_URLS:
+        try:
+            requests.post(url)
+        except Exception as e:
+            print(f'An error ocurred during "INTENTS" webhook communication {e}')
 
 
 def domain_webhook():
