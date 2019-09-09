@@ -1,19 +1,24 @@
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.conf import settings
+from django.urls import reverse
 
 from .models import Intent, Utter, Story
 
 import requests
 
-DOMAIN_URL = ''
-ACTIONS_URL = ''
 
+@receiver([post_save, post_delete], sender=Story)
 @receiver([post_save, post_delete], sender=Intent)
 @receiver([post_save, post_delete], sender=Utter)
-def domain_webhook(sender, instance, **kwargs):
-    data = webhook_data('domain', DOMAIN_URL)
-    [requests.post(url) for url in settings.WEBHOOK_URLS] 
+def stories_webhook(sender, instance, **kwargs):
+    data = webhook_data('stories', reverse('stories-file', kwargs={'project_id': instance.project.id}))
+    
+    for url in settings.WEBHOOK_URLS:
+        try:
+            requests.post(url)
+        except Exception as e:
+            print(f'An error ocurred during webhook communication {e}!')
 
 
 #@receiver([post_save, post_delete], sender=Intent)
@@ -27,7 +32,7 @@ def intent_webhook():
     pass
 
 
-def stories_webhook():
+def domain_webhook():
     pass
 
 
