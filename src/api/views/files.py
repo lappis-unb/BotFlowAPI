@@ -29,3 +29,26 @@ class StoriesFile(APIView):
         
         return JsonResponse({'content': markdown_str})  
 
+
+class IntentsFile(APIView):
+    """
+    Receives a get request with a project id and returns
+    a json response with the markdown string, containing
+    all intents of the project, in the body.
+    """
+
+    def get(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id)
+        intents = Intent.objects.filter(project=project)
+
+        if not intents:
+            raise Http404
+
+        parser = IntentParser()
+        markdown_str = ''
+
+        for intent in intents:
+            markdown_str += parser.parse(intent)
+
+        return JsonResponse({'content': markdown_str})
+

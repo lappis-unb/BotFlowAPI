@@ -12,4 +12,5 @@ urlpatterns = [
     path('projects/<int:project_id>/utters/<int:utter_id>', ListUtters.as_view()),
 
     path('files/<int:project_id>/stories/', StoriesFile.as_view(), name='stories-file'),
+    path('files/<int:project_id/intents/', IntentsFile.as_view(), name='intents-file'),
 ]
