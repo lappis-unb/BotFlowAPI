@@ -21,6 +21,8 @@ class ListIntents(APIView):
             many=True
         ).data
 
+        intents = sorted(intents, key=lambda x: x['name'])
+
         return Response(intents)
 
     def post(self, request, project_id=None, intent_id=None, format=None):
