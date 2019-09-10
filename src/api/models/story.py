@@ -1,6 +1,6 @@
 from djongo import models
-from boogie.rest import rest_api
 from .project import Project
+from rest_framework import serializers
 
 class Story(models.Model):
     name = models.TextField(default="")
@@ -10,3 +10,13 @@ class Story(models.Model):
     )
 
     objects = models.DjongoManager()
+
+class StorySerializer(serializers.ModelSerializer):
+    formatted_content = serializers.SerializerMethodField()
+
+    def get_formatted_content(self, obj):
+        return [dict(content) for content in obj.content]
+
+    class Meta:
+        model = Story
+        fields = ['id', 'name', 'formatted_content']
