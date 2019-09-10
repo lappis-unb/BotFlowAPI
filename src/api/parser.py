@@ -8,10 +8,13 @@ class StoryParser:
     """
     def parse(self, story: Story):
         name = f'## {story.name}\n'
-        content = ''
+        body = ''
 
-        for i in story.intents:
-            content += self._intent_parser(i)
+        for c in story.content:
+            if isinstance(c, Intent):
+                body += self._intent_parser(c)
+            elif isinstance(c, Utter):
+                body += self._uter_parser(c)
 
         return name + content
 
