@@ -22,6 +22,8 @@ class ListUtters(APIView):
             many=True
         ).data
 
+        utters = sorted(utters, key=lambda x: x['name'])
+
         return Response(utters)
 
     def post(self, request, project_id=None, utter_id=None, format=None):
