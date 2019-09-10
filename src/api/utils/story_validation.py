@@ -11,22 +11,29 @@ def validate_content_keys(content):
 
 def validate_content(content_array):
     for content in content_array:
+        is_valid = True
+
         if validate_content_keys(content):
             if content['type'] == 'intent':
                 # validate intent
                 if not intent_exists(content['id']):
-                    return False
+                    is_valid = False
+
             elif content['type'] == 'utter':
                 # validate utter
                 if not utter_exists(content['id']):
-                    return False
+                    is_valid = False
+                    
             else:
-                # Invalid type
-                return False
+                # invalid type
+                is_valid = False
         else:
             # missing keys
+            is_valid = False
+
+        if not is_valid:
             return False
 
-        return True
+    return True
             
         
