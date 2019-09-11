@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Intent, IntentSerializer, Project
-from api.utils import request_to_dict
+from api.utils import request_to_dict, validate_intent
 
 class ListIntents(APIView):
 
@@ -31,6 +31,9 @@ class ListIntents(APIView):
         
         data = request_to_dict(request)
         
+        if not validate_intent(data):
+            return Response({'error': 'Missing fields'}, status=400)
+
         project = get_object_or_404(Project, pk=project_id)
 
         intent = Intent.objects.create(
@@ -50,6 +53,9 @@ class ListIntents(APIView):
     def put(self, request, project_id=None, intent_id=None, format=None):
         intent = get_object_or_404(Intent, pk=intent_id)
         data = request_to_dict(request)
+
+        if not validate_intent(data):
+            return Response({'error': 'Missing fields'}, status=400)
 
         for attr in data:
             setattr(intent, attr, data[attr])
