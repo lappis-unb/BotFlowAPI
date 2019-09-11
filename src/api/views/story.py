@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Story, StorySerializer, Project
-from api.utils import request_to_dict, validate_content
+from api.utils import request_to_dict, validate_content, story_content_formatter
 
 class ListStories(APIView):
 
@@ -35,7 +35,7 @@ class ListStories(APIView):
         if validate_content(data['content']):
             story = Story.objects.create(
                 name=data['name'],
-                content=data['content'],
+                content=story_content_formatter(data['content']),
                 project=project
             )
 
@@ -55,7 +55,10 @@ class ListStories(APIView):
 
         if validate_content(data['content']):
             for attr in data:
-                setattr(story, attr, data[attr])
+                if attr == 'content':
+                    setattr(story, attr, story_content_formatter(data[attr]))
+                else:
+                    setattr(story, attr, data[attr])
 
             story.save()
 
