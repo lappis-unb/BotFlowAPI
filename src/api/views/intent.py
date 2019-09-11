@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from api.models import Intent, IntentSerializer, Project
+from api.models import Intent, IntentSerializer, Project, IntentListSerializer
 from api.utils import request_to_dict, validate_intent
 
 class ListIntents(APIView):
@@ -16,7 +16,7 @@ class ListIntents(APIView):
         
         project = get_object_or_404(Project, pk=project_id)
 
-        intents = IntentSerializer(
+        intents = IntentListSerializer(
             Intent.objects.filter(project=project), 
             many=True
         ).data

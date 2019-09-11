@@ -19,3 +19,8 @@ class UtterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Utter
         fields = ['id', 'name', 'multiple_alternatives', 'alternatives']
+
+class UtterListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Utter
+        fields = ['id', 'name']

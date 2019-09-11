@@ -16,3 +16,8 @@ class IntentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Intent
         fields = ['id', 'name', 'samples']
+
+class IntentListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Intent
+        fields = ['id', 'name']

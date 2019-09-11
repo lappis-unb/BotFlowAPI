@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from api.models import Utter, UtterSerializer, Project
+from api.models import Utter, UtterSerializer, Project, UtterListSerializer
 from api.utils import request_to_dict, validate_utter
 
 class ListUtters(APIView):
@@ -17,7 +17,7 @@ class ListUtters(APIView):
         
         project = get_object_or_404(Project, pk=project_id)
 
-        utters = UtterSerializer(
+        utters = UtterListSerializer(
             Utter.objects.filter(project=project), 
             many=True
         ).data
