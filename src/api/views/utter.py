@@ -32,8 +32,10 @@ class ListUtters(APIView):
         
         data = request_to_dict(request)
         
-        if not validate_utter(data):
-            return Response({'error': 'Invalid data'}, status=400)
+        is_valid, error_messages = validate_utter(data, project_id)
+
+        if not is_valid:
+            return Response({'errors': error_messages}, status=400)
 
 
         project = get_object_or_404(Project, pk=project_id)
@@ -56,8 +58,10 @@ class ListUtters(APIView):
         utter = get_object_or_404(Utter, pk=utter_id)
         data = request_to_dict(request)
 
-        if not validate_utter(data):
-            return Response({'error': 'Invalid data'}, status=400)
+        is_valid, error_messages = validate_utter(data, project_id)
+
+        if not is_valid:
+            return Response({'errors': error_messages}, status=400)
 
         for attr in data:
             setattr(utter, attr, data[attr])

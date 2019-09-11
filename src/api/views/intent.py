@@ -31,8 +31,10 @@ class ListIntents(APIView):
         
         data = request_to_dict(request)
         
-        if not validate_intent(data):
-            return Response({'error': 'Invalid data'}, status=400)
+        is_valid, error_messages = validate_intent(data, project_id)
+
+        if not is_valid:
+            return Response({'errors': error_messages}, status=400)
 
         project = get_object_or_404(Project, pk=project_id)
 
@@ -54,8 +56,10 @@ class ListIntents(APIView):
         intent = get_object_or_404(Intent, pk=intent_id)
         data = request_to_dict(request)
 
-        if not validate_intent(data):
-            return Response({'error': 'Invalid data'}, status=400)
+        is_valid, error_messages = validate_intent(data, project_id)
+
+        if not is_valid:
+            return Response({'errors': error_messages}, status=400)
 
         for attr in data:
             setattr(intent, attr, data[attr])

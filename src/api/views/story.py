@@ -31,7 +31,7 @@ class ListStories(APIView):
         data = request_to_dict(request)
 
         if not validate_story(data):
-            return Response({'error': 'Invalid data'}, status=400)
+            return Response({'errors': ['Invalid data']}, status=400)
         
         project = get_object_or_404(Project, pk=project_id)
 
@@ -46,7 +46,7 @@ class ListStories(APIView):
 
             return Response(StorySerializer(story).data, status=201)
         else:
-            return Response({'error': 'Invalid content array'}, status=400)
+            return Response({'errors': ['Invalid content array']}, status=400)
 
     def delete(self, request, project_id=None, story_id=None, format=None):
         story = get_object_or_404(Story, pk=story_id)
@@ -59,7 +59,7 @@ class ListStories(APIView):
         data = request_to_dict(request)
 
         if not validate_story(data):
-            return Response({'error': 'Invalid data'}, status=400)
+            return Response({'errors': ['Invalid data']}, status=400)
 
         if validate_content(data['content']):
             for attr in data:
@@ -72,4 +72,4 @@ class ListStories(APIView):
 
             return Response(StorySerializer(story).data)
         else:
-            return Response({'error': 'Invalid content array'}, status=400)
+            return Response({'errors': ['Invalid content array']}, status=400)
