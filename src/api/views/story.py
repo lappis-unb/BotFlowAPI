@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from api.models import Story, StorySerializer, Project
+from api.models import Story, StorySerializer, Project, StoryListSerializer
 from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story
 
 class ListStories(APIView):
@@ -17,7 +17,7 @@ class ListStories(APIView):
         
         project = get_object_or_404(Project, pk=project_id)
 
-        stories = StorySerializer(
+        stories = StoryListSerializer(
             Story.objects.filter(project=project), 
             many=True
         ).data
@@ -42,7 +42,7 @@ class ListStories(APIView):
                 project=project
             )
             story.name = "Diálogo_{0}_{1}".format(story.project.name, story.id)
-            story.save
+            story.save()
 
             return Response(StorySerializer(story).data, status=201)
         else:

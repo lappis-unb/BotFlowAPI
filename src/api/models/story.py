@@ -20,3 +20,16 @@ class StorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = ['id', 'name', 'content']
+
+class StoryListSerializer(serializers.ModelSerializer):
+    content = serializers.SerializerMethodField()
+
+    def get_content(self, obj):
+        return [{
+            'name': content['name'],
+            'type': content['type']
+        } for content in obj.content]
+
+    class Meta:
+        model = Story
+        fields = ['id', 'name', 'content']
