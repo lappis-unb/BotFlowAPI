@@ -24,7 +24,6 @@ if __name__ == '__main__':
     @app.route('/', methods=['POST'])
     def listen():
         data = request.json
-        print(f'data {data}')
         print(f'Updating {data["type"]} file')
         
         try:
@@ -32,24 +31,16 @@ if __name__ == '__main__':
             data = response.json()
 
             global args
-            print('args ' + getattr(args, data['type'] + '_path'))
-            print('data ' + data['content'])
+            
             file_path = getattr(args, data['type'] + '_path')
             with open(file_path, 'w') as f:
-                print('aaaaaaaaa')
-                print(f.write(data['content']))    
+                f.write(data['content'])    
+        
             return jsonify({})  
 
-            #save_file(getattr(args, data['type'] + '_path'), data['content'])
-            return jsonify({})
         except Exception as e:
             print(f'Error trying to update file {e}')
             return jsonify({})  
-
-    def save_file(file_path, content):
-        
-        with open(file_path, 'w') as f:
-            f.write(content)
 
 
     app.run(host=args.host, port=args.port, debug=args.debug)
