@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Story, StorySerializer, Project
-from api.utils import request_to_dict, validate_content, story_content_formatter
+from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story
 
 class ListStories(APIView):
 
@@ -29,6 +29,9 @@ class ListStories(APIView):
             return Response(status=404)
         
         data = request_to_dict(request)
+
+        if not validate_story(data):
+            return Response({'error': 'Invalid data'}, status=400)
         
         project = get_object_or_404(Project, pk=project_id)
 
@@ -54,6 +57,9 @@ class ListStories(APIView):
     def put(self, request, project_id=None, story_id=None, format=None):
         story = get_object_or_404(Story, pk=story_id)
         data = request_to_dict(request)
+
+        if not validate_story(data):
+            return Response({'error': 'Invalid data'}, status=400)
 
         if validate_content(data['content']):
             for attr in data:

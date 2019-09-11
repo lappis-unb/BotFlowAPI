@@ -32,7 +32,7 @@ class ListIntents(APIView):
         data = request_to_dict(request)
         
         if not validate_intent(data):
-            return Response({'error': 'Missing fields'}, status=400)
+            return Response({'error': 'Invalid data'}, status=400)
 
         project = get_object_or_404(Project, pk=project_id)
 
@@ -55,7 +55,7 @@ class ListIntents(APIView):
         data = request_to_dict(request)
 
         if not validate_intent(data):
-            return Response({'error': 'Missing fields'}, status=400)
+            return Response({'error': 'Invalid data'}, status=400)
 
         for attr in data:
             setattr(intent, attr, data[attr])
