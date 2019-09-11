@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Utter, UtterSerializer, Project
-from api.utils import request_to_dict
+from api.utils import request_to_dict, validate_utter
 
 class ListUtters(APIView):
 
@@ -32,6 +32,10 @@ class ListUtters(APIView):
         
         data = request_to_dict(request)
         
+        if not validate_utter(data):
+            return Response({'error': 'Missing fields'}, status=400)
+
+
         project = get_object_or_404(Project, pk=project_id)
 
         utter = Utter.objects.create(
@@ -51,6 +55,9 @@ class ListUtters(APIView):
     def put(self, request, project_id=None, utter_id=None, format=None):
         utter = get_object_or_404(Utter, pk=utter_id)
         data = request_to_dict(request)
+
+        if not validate_utter(data):
+            return Response({'error': 'Missing fields'}, status=400)
 
         for attr in data:
             setattr(utter, attr, data[attr])
