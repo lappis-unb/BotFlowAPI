@@ -34,10 +34,12 @@ class ListStories(APIView):
 
         if validate_content(data['content']):
             story = Story.objects.create(
-                name=data['name'],
+                name="Default Name",
                 content=story_content_formatter(data['content']),
                 project=project
             )
+            story.name = "Diálogo_{0}_{1}".format(story.project.name, story.id)
+            story.save
 
             return Response(StorySerializer(story).data, status=201)
         else:
