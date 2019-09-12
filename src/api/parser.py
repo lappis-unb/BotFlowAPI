@@ -9,28 +9,23 @@ class StoryParser:
     def parse(self, story: Story):
         name = f'## {story.name}\n'
         body = ''
-
+        
         for c in story.content:
-            if isinstance(c, Intent):
+            if c['type'] == "intent":
                 body += self._intent_parser(c)
-            elif isinstance(c, Utter):
-                body += self._uter_parser(c)
+            elif c['type'] == "utter":
+                body += self._utter_parser(c)
 
+        print(name + body)
         return name + body
 
 
-    def _intent_parser(self, intent: Intent):
-        name = f'* {intent.name}\n'
-        content = ''
-
-        for s in intent.samples:
-            content += f'\t {self._utter_parser(s)}'
-
-        return name + content
+    def _intent_parser(self, intent):
+        return f'* {intent["name"]}\n'
 
     
-    def _utter_parser(self, utter : Utter):
-        return f'- {utter}\n'
+    def _utter_parser(self, utter):
+        return f'- {utter["name"]}\n'
 
 
 class IntentParser:
