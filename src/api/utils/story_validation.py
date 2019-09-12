@@ -35,5 +35,13 @@ def validate_content(content_array):
             return False
 
     return True
+
+def validate_story(data):
+    missing_keys = not ('content' in data)
+
+    if missing_keys:
+        return False
+
+    return True
             
         
