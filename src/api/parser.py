@@ -16,7 +16,6 @@ class StoryParser:
             elif c['type'] == "utter":
                 body += self._utter_parser(c)
 
-        print(name + body)
         return name + body
 
 
