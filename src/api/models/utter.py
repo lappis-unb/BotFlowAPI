@@ -1,6 +1,7 @@
 from djongo import models
 from rest_framework import serializers
 from .project import Project
+import random
 
 class Utter(models.Model):
     name = models.TextField()
@@ -24,3 +25,18 @@ class UtterListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Utter
         fields = ['id', 'name']
+
+class UtterExampleSerializer(serializers.ModelSerializer):
+    example = serializers.SerializerMethodField()
+
+    def to_representation(self, obj):
+        ret = super().to_representation(obj)
+        ret['type'] = 'utter'
+        return ret
+
+    def get_example(self, obj):
+        return random.choice(obj.alternatives)
+
+    class Meta:
+        model = Utter
+        fields = ['id', 'name', 'example']
