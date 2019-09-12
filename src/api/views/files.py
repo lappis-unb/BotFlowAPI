@@ -3,8 +3,8 @@ from rest_framework.views import APIView
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, Http404
 
-from api.models import Project, Story
-from api.parser import StoryParser
+from api.models import Project, Story, Intent
+from api.parser import StoryParser, IntentParser
 
 
 class StoriesFile(APIView):
