@@ -22,6 +22,11 @@ class UtterSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'multiple_alternatives', 'alternatives']
 
 class UtterListSerializer(serializers.ModelSerializer):
+    def to_representation(self, obj):
+        ret = super().to_representation(obj)
+        ret['type'] = 'utter'
+        return ret
+    
     class Meta:
         model = Utter
         fields = ['id', 'name']
