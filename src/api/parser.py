@@ -16,7 +16,7 @@ class StoryParser:
             elif isinstance(c, Utter):
                 body += self._uter_parser(c)
 
-        return name + content
+        return name + body
 
 
     def _intent_parser(self, intent: Intent):
