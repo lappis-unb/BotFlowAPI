@@ -1,9 +1,8 @@
 from djongo import models
-from .project import Project
-from .intent import Intent
-from .utter import Utter
+from . import Project, Intent, Utter
 from rest_framework import serializers
 import random
+
 
 class Story(models.Model):
     name = models.TextField(default="")
