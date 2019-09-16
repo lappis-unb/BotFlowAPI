@@ -19,10 +19,10 @@ class IntentSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'samples']
 
 class IntentListSerializer(serializers.ModelSerializer):
-    def to_representation(self, obj):
-        ret = super().to_representation(obj)
-        ret['type'] = 'intent'
-        return ret
+    # def to_representation(self, obj):
+    #     ret = super().to_representation(obj)
+    #     ret['type'] = 'intent'
+    #     return ret
     
     class Meta:
         model = Intent
