@@ -26,7 +26,7 @@ fi
 echo "### Creating dummy certificate for $domains ..."
 path="/etc/letsencrypt/live/$domains"
 mkdir -p "$data_path/conf/live/$domains"
-docker-compose -f docker-compose.yml -f production.yml run --rm --entrypoint "\
+docker-compose -f production.yml run --rm --entrypoint "\
   openssl req -x509 -nodes -newkey rsa:1024 -days 1\
     -keyout '$path/privkey.pem' \
     -out '$path/fullchain.pem' \
@@ -35,7 +35,7 @@ echo
 
 
 echo "### Starting nginx ..."
-docker-compose -f docker-compose.yml -f production.yml up -d nginx
+docker-compose -f production.yml up -d nginx
 echo
 
 echo "### Deleting dummy certificate for $domains ..."
@@ -62,7 +62,7 @@ esac
 # Enable staging mode if needed
 if [ $staging != "0" ]; then staging_arg="--staging"; fi
 
-docker-compose -f docker-compose.yml -f production.yml run --rm --entrypoint "\
+docker-compose -f production.yml run --rm --entrypoint "\
   certbot certonly --webroot -w /var/www/certbot \
     $staging_arg \
     $email_arg \
@@ -73,4 +73,4 @@ docker-compose -f docker-compose.yml -f production.yml run --rm --entrypoint "\
 echo
 
 echo "### Reloading nginx ..."
-docker-compose -f docker-compose.yml -f production.yml exec nginx nginx -s reload
+docker-compose -f production.yml exec nginx nginx -s reload

@@ -23,7 +23,7 @@ def stories_webhook(sender, instance, **kwargs):
 
 @receiver([post_save, post_delete], sender=Intent)
 def intents_webhook(sender, instance, **kwargs):
-    data = webhook_data('intents', reverse('intents-file'), kwargs={'project_id': instance.project.id})
+    data = webhook_data('intents', reverse('intents-file', kwargs={'project_id': instance.project.id}))
 
     for url in settings.WEBHOOK_URLS:
         try:
