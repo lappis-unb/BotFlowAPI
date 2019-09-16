@@ -1,4 +1,5 @@
 from rest_framework.views import APIView
+from rest_framework.parsers import FileUploadParser
 
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, Http404
@@ -52,3 +53,18 @@ class IntentsFile(APIView):
 
         return JsonResponse({'content': markdown_str})
 
+
+    def put(self, request, project_id, format=None):
+        print("here")
+        try:
+            # file_obj = request.data['file']
+            # print(file_obj.read()
+            file_obj = request.data["file"]
+            print(file_obj)
+
+
+        except:
+            print("error honey")
+            return JsonResponse({'content': "error honey"})
+
+        return JsonResponse({'content': "hey"})
