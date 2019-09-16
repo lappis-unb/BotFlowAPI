@@ -54,16 +54,18 @@ class ListIntents(APIView):
 
     def put(self, request, project_id=None, intent_id=None, format=None):
         intent = get_object_or_404(Intent, pk=intent_id)
+        project = get_object_or_404(Project, pk=project_id)
         data = request_to_dict(request)
 
         is_valid, error_messages = validate_intent(data, project_id)
 
         if not is_valid:
             return Response({'errors': error_messages}, status=400)
-
+ 
         for attr in data:
             setattr(intent, attr, data[attr])
 
+        intent.project = project
         intent.save()
 
         return Response(IntentSerializer(intent).data)

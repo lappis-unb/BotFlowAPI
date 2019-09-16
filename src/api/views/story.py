@@ -56,6 +56,7 @@ class ListStories(APIView):
 
     def put(self, request, project_id=None, story_id=None, format=None):
         story = get_object_or_404(Story, pk=story_id)
+        project = get_object_or_404(Project, pk=project_id)
         data = request_to_dict(request)
 
         if not validate_story(data):
@@ -68,6 +69,7 @@ class ListStories(APIView):
                 else:
                     setattr(story, attr, data[attr])
 
+            story.project = project
             story.save()
 
             return Response(StorySerializer(story).data)
