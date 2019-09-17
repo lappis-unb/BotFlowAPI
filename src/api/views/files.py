@@ -6,7 +6,11 @@ from django.http import JsonResponse, Http404
 
 from api.models import Project, Story, Intent
 from api.parser import StoryParser, IntentParser
+from api.utils.handlers import handle_uploaded_file
 
+from ruamel.yaml import YAML
+import markdown
+from bs4 import BeautifulSoup
 
 class StoriesFile(APIView):
     """
@@ -55,16 +59,38 @@ class IntentsFile(APIView):
 
 
     def put(self, request, project_id, format=None):
-        print("here")
+        project = get_object_or_404(Project, pk=project_id)
+
         try:
-            # file_obj = request.data['file']
-            # print(file_obj.read()
-            file_obj = request.data["file"]
-            print(file_obj)
+            # Handle file from request
+            file_obj = request.data['file']
+            file_tmp = handle_uploaded_file(file_obj)
+            file_content = file_tmp.read().decode('utf-8')
 
+            # Parser markdown to html 
+            html = markdown.markdown(file_content)
+            html = BeautifulSoup(html, features="html.parser")
+            intent_names = html.findAll('h2')
+            intent_list_samples = html.findAll('ul')
 
-        except:
-            print("error honey")
-            return JsonResponse({'content': "error honey"})
+            # Extract data
+            intents = []
+            for intent_name, intent_samples in zip(intent_names, intent_list_samples):
+                intent_name = intent_name.string.split("intent:")[-1]
+                samples = BeautifulSoup(str(intent_samples), features="html.parser").findAll('li')
+                samples = [sample.string for sample in samples]
+                
+                intent = {"name" : intent_name,
+                          "samples" : samples,
+                          "project" : project }
+                intents.append(Intent(**intent))
+            
 
-        return JsonResponse({'content': "hey"})
+            Intent.objects.bulk_create(intents)
+            file_tmp.close()
+
+        except Exception as e:
+            return JsonResponse({'content': "File had problems during upload"})
+            raise e
+
+        return JsonResponse({'content': "File has been successfully uploaded"})
