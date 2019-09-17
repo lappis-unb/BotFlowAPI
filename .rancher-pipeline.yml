@@ -19,6 +19,5 @@ stages:
   steps:
   - applyYamlConfig:
       path: ./deploy/deployment-production.yaml
-# branch:
-#   include: [master, devel]
-timeout: 60
+branch:
+  include: [master, devel]
