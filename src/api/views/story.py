@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Story, StorySerializer, Project, StoryListSerializer
-from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story
+from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story, filter_content_by_name
 
 class ListStories(APIView):
 
@@ -17,10 +17,14 @@ class ListStories(APIView):
         
         project = get_object_or_404(Project, pk=project_id)
 
+        name_filter = request.GET.get('filter') or ""
+
         stories = StoryListSerializer(
-            Story.objects.filter(project=project), 
+            Story.objects.filter(project=project, ), 
             many=True
         ).data
+
+        stories = filter_content_by_name(stories, name_filter)
 
         return Response(stories)
 
