@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Story, StorySerializer, Project, StoryListSerializer
 from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story, filter_content_by_name
-from api.webhook import stories_delete_hook
+from api.webhook import stories_delete_hook, domain_delete_hook
 
 
 class ListStories(APIView):
@@ -58,6 +58,7 @@ class ListStories(APIView):
         story = get_object_or_404(Story, pk=story_id)
         story.delete()
         story_delete_hook(project_id)
+        domain_delete_hook(project_id)
 
         return Response(status=204)        
 

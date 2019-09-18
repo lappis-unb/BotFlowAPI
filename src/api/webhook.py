@@ -33,8 +33,17 @@ def intents_delete_hook(project_pk):
     hook(data, 'INTENTS')    
 
 
-def domain_webhook():
-    pass
+def domain_delete_hook(project_pk): 
+    data = webhook_data('domain', reverse('domain-file'), kwargs={'project_id': project_pk})
+    hook(data, 'DOMAIN')
+
+
+@receiver([post_save], sender=Story)
+@receiver([post_save], sender=Intent)
+@receiver([post_save], sender=Utter)
+def domain_webhook(sender, instance, **kwargs):
+    data = webhook_data('domain', reverse('domain-file', kwargs={'project_id': instance.project.id}))
+    hook(data, 'DOMAIN')
 
 
 def hook(data, error):

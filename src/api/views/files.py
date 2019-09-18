@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, Http404
 
 from api.models import Project, Story, Intent
-from api.parser import StoryParser, IntentParser
+from api.parser import StoryParser, IntentParser, DomainParser
 
 
 class StoriesFile(APIView):
@@ -52,3 +52,17 @@ class IntentsFile(APIView):
 
         return JsonResponse({'content': markdown_str})
 
+
+class DomainFile(APIView):
+    """
+    Receives a get request with a project id and returns
+    a json response with markdown string, containing all
+    domain content, in the body.
+    """
+
+    def get(self, request, project_id):
+        project = get_object_or_404(Project, pk=project_id)
+        parser = DomainParser()
+        markdown_str = parser.parse(project)
+
+        return JsonResponse({'content': markdown_str})
