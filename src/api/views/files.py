@@ -8,8 +8,9 @@ from api.models import Project, Story, Intent
 from api.parser import StoryParser, IntentParser
 from api.utils.handlers import handle_uploaded_file
 
-from ruamel.yaml import YAML
 import markdown
+import html2markdown
+from ruamel.yaml import YAML
 from bs4 import BeautifulSoup
 
 class StoriesFile(APIView):
@@ -68,7 +69,10 @@ class IntentsFile(APIView):
             file_content = file_tmp.read().decode('utf-8')
 
             # Parser markdown to html 
-            html = markdown.markdown(file_content)
+            md = markdown.Markdown()
+            html = md.convert(file_content)
+            print("MD", md)
+            md.reset()
             html = BeautifulSoup(html, features="html.parser")
             intent_names = html.findAll('h2')
             intent_list_samples = html.findAll('ul')
@@ -76,21 +80,34 @@ class IntentsFile(APIView):
             # Extract data
             intents = []
             for intent_name, intent_samples in zip(intent_names, intent_list_samples):
-                intent_name = intent_name.string.split("intent:")[-1]
-                samples = BeautifulSoup(str(intent_samples), features="html.parser").findAll('li')
-                samples = [sample.string for sample in samples]
-                
-                intent = {"name" : intent_name,
-                          "samples" : samples,
-                          "project" : project }
-                intents.append(Intent(**intent))
-            
+                if intent_name.string is not None:
+                    if "intent" in intent_name.string:                    
+                        intent_name = intent_name.string.split("intent:")[-1]
+                        s = BeautifulSoup(str(intent_samples), features="html.parser").findAll('li')
+                        
+                        samples = []
+                        for sample in s:
+                            sample_string = ""
+                            if sample.string is None:
+                                s = str(sample)
+                                s = s.replace("<li>", "")
+                                s = s.replace("</li>", "")
+                                sample_string = html2markdown.convert(s)
+                            else:
+                                sample_string = sample.string
 
+                            samples.append(sample_string)
+
+                        intent = {"name" : intent_name,
+                                "samples" : samples,
+                                "project" : project }
+                        intents.append(Intent(**intent))
+            
             Intent.objects.bulk_create(intents)
             file_tmp.close()
 
         except Exception as e:
-            return JsonResponse({'content': "File had problems during upload"})
             raise e
+            return JsonResponse({'content': "File had problems during upload"})
 
         return JsonResponse({'content': "File has been successfully uploaded"})
