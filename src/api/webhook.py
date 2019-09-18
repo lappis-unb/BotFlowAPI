@@ -34,7 +34,7 @@ def intents_delete_hook(project_pk):
 
 
 def domain_delete_hook(project_pk): 
-    data = webhook_data('domain', reverse('domain-file'), kwargs={'project_id': project_pk})
+    data = webhook_data('domain', reverse('domain-file', kwargs={'project_id': project_pk}))
     hook(data, 'DOMAIN')
 
 
