@@ -4,7 +4,7 @@ from rest_framework.parsers import FileUploadParser
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, Http404
 
-from api.models import Project, Story, Intent
+from api.models import Project, Story, Intent, Utter
 from api.parser import StoryParser, IntentParser
 from api.utils.handlers import handle_uploaded_file
 
@@ -58,7 +58,9 @@ class IntentsFile(APIView):
 
         return JsonResponse({'content': markdown_str})
 
-
+    """
+    Receives a put request with a project id and a Markdown file with intents specs as arguments. Then parse and add this file into DB 
+    """
     def put(self, request, project_id, format=None):
         project = get_object_or_404(Project, pk=project_id)
 
@@ -104,6 +106,49 @@ class IntentsFile(APIView):
                         intents.append(Intent(**intent))
             
             Intent.objects.bulk_create(intents)
+            file_tmp.close()
+
+        except Exception as e:
+            raise e
+            return JsonResponse({'content': "File had problems during upload"})
+
+        return JsonResponse({'content': "File has been successfully uploaded"})
+
+
+
+class UttersFile(APIView):
+    """
+    Receives a put request with a project id and a YML file with utter specs as arguments. Then parse and add this file into DB 
+    """
+
+    def put(self, request, project_id, format=None):
+        project = get_object_or_404(Project, pk=project_id)
+
+        try:
+            # Handle file from request
+            file_obj = request.data['file']
+            file_tmp = handle_uploaded_file(file_obj)
+
+            # Handle yaml
+            yaml=YAML(typ="safe")
+            domain = yaml.load(file_tmp)
+            
+            utters_list = domain['templates']
+            utters = []
+            for utter_name in utters_list.keys():
+                alternatives = []
+
+                for alternative in utters_list[utter_name]:
+                    alternatives.append(alternative['text'])
+
+                utter = {"name" : utter_name,
+                         "alternatives" : [alternatives],
+                         "project" : project }
+
+                utters.append(Utter(**utter))
+            
+            Utter.objects.bulk_create(utters)
+
             file_tmp.close()
 
         except Exception as e:
