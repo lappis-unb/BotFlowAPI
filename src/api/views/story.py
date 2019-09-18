@@ -2,7 +2,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Story, StorySerializer, Project, StoryListSerializer
-from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story
+from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story, filter_content_by_name
+from api.webhook import stories_delete_hook
+
 
 class ListStories(APIView):
 
@@ -17,10 +19,14 @@ class ListStories(APIView):
         
         project = get_object_or_404(Project, pk=project_id)
 
+        name_filter = request.GET.get('filter') or ""
+
         stories = StoryListSerializer(
-            Story.objects.filter(project=project), 
+            Story.objects.filter(project=project, ), 
             many=True
         ).data
+
+        stories = filter_content_by_name(stories, name_filter)
 
         return Response(stories)
 
@@ -51,11 +57,13 @@ class ListStories(APIView):
     def delete(self, request, project_id=None, story_id=None, format=None):
         story = get_object_or_404(Story, pk=story_id)
         story.delete()
+        story_delete_hook(project_id)
 
         return Response(status=204)        
 
     def put(self, request, project_id=None, story_id=None, format=None):
         story = get_object_or_404(Story, pk=story_id)
+        project = get_object_or_404(Project, pk=project_id)
         data = request_to_dict(request)
 
         if not validate_story(data):
@@ -68,6 +76,7 @@ class ListStories(APIView):
                 else:
                     setattr(story, attr, data[attr])
 
+            story.project = project
             story.save()
 
             return Response(StorySerializer(story).data)

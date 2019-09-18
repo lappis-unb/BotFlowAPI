@@ -14,6 +14,6 @@ urlpatterns = [
     path('projects/<int:project_id>/utters/<int:utter_id>/example', ListUtterExample.as_view()),
     path('projects/<int:project_id>/stories/', ListStories.as_view()),
     path('projects/<int:project_id>/stories/<int:story_id>', ListStories.as_view()),
-    path('files/<int:project_id>/stories/', StoriesFile.as_view(), name='stories-file'),
-    path('files/<int:project_id>/intents/', IntentsFile.as_view(), name='intents-file'),
+    path('files/stories/<int:project_id>', StoriesFile.as_view(), name='stories-file'),
+    path('files/intents/<int:project_id>', IntentsFile.as_view(), name='intents-file'),
 ]

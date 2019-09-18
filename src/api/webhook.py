@@ -6,35 +6,45 @@ from django.urls import reverse
 from .models import Intent, Utter, Story
 
 import requests
+import json
 
 
-@receiver([post_save, post_delete], sender=Story)
-@receiver([post_save, post_delete], sender=Intent)
-@receiver([post_save, post_delete], sender=Utter)
+@receiver([post_save], sender=Story)
+@receiver([post_save], sender=Intent)
+@receiver([post_save], sender=Utter)
 def stories_webhook(sender, instance, **kwargs):
-    data = webhook_data('stories', reverse('stories-file', kwargs={'project_id': instance.project.id}))
-    
-    for url in settings.WEBHOOK_URLS:
-        try:
-            requests.post(url)
-        except Exception as e:
-            print(f'An error ocurred during "STORIES" webhook communication {e}!')
+    data = webhook_data('stories', reverse('stories-file', kwargs={'project_id': instance.project.id})) 
+    hook(data, 'STORIES')    
 
 
-@receiver([post_save, post_delete], sender=Intent)
+@receiver([post_save], sender=Intent)
 def intents_webhook(sender, instance, **kwargs):
     data = webhook_data('intents', reverse('intents-file', kwargs={'project_id': instance.project.id}))
+    hook(data, 'INTENTS')    
 
-    for url in settings.WEBHOOK_URLS:
-        try:
-            requests.post(url)
-        except Exception as e:
-            print(f'An error ocurred during "INTENTS" webhook communication {e}')
+
+def stories_delete_hook(project_pk):
+    data = webhook_data('stories', reverse('stories-file', kwargs={'project_id': project_pk}))
+    hook(data, 'STORIES')    
+
+
+def intents_delete_hook(project_pk):
+    data = webhook_data('intents', reverse('intents-file', kwargs={'project_id': project_pk}))
+    hook(data, 'INTENTS')    
 
 
 def domain_webhook():
     pass
 
 
+def hook(data, error):
+    for url in settings.WEBHOOK_URLS:
+        try:
+            requests.post(url, json=data)
+
+        except Exception as e:
+            print(f'An error occurred during "{error}" webhook communication {e}!')
+
+
 def webhook_data(content, url):
-    return {content: url}
+    return json.dumps({content: url})

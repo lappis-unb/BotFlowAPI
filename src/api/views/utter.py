@@ -43,6 +43,7 @@ class ListUtters(APIView):
         utter = Utter.objects.create(
             name=data['name'],
             alternatives=data['alternatives'],
+            multiple_alternatives=data['multiple_alternatives'],
             project=project
         )
 
