@@ -92,7 +92,10 @@ DATABASES = {
         'NAME': os.environ['MONGO_DATABASE'],
         'USER': os.environ['MONGO_USERNAME'],
         'PASSWORD': os.environ['MONGO_PASSWORD'],
-        'HOST': os.environ['MONGO_HOST']
+        'HOST': os.environ['MONGO_HOST'],
+        'AUTH_SOURCE': os.environ['MONGO_DATABASE'],
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',
+        'PORT': 27017
     }
 }
 
