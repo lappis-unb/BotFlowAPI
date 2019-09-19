@@ -89,10 +89,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'botflowapi',
-        'USER': 'dev',
-        'PASSWORD': 'dev',
-        'HOST': 'mongodb'
+        'NAME': os.environ['MONGO_DATABASE'],
+        'USER': os.environ['MONGO_USERNAME'],
+        'PASSWORD': os.environ['MONGO_PASSWORD'],
+        'HOST': os.environ['MONGO_HOST']
     }
 }
 
