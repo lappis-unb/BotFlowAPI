@@ -85,3 +85,8 @@ spec:
             secretKeyRef:
               name: botflow-api-production
               key: mongo-host
+        - name: MONGO_AUTHENTICATION_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-production
+              key: mongo-database

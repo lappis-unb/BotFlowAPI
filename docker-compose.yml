@@ -17,6 +17,7 @@ services:
       - MONGO_USERNAME=dev
       - MONGO_PASSWORD=dev
       - MONGO_DATABASE=botflowapi
+      - MONGO_AUTHENTICATION_DATABASE=admin
       - MONGO_HOST=mongodb
   mongodb:
     image: mongo
