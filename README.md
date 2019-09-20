@@ -1,10 +1,10 @@
 # BotFlow API
-This repository is intended to obtain data pertaining to content created or edited within the BotFlow platform.
+This repository is an API of the BotFlow platform [https://github.com/lappis-unb/BotFlow](https://github.com/lappis-unb/BotFlow)
 
 ## How to Contribute
 To contribute to our API just follow the steps below!
 
--First we will enable a local environment for work, so just follow the step by step described below:
+- First we will enable a local environment for work, so just follow the step by step described below:
     
 * Check Prerequisites:
 
@@ -57,7 +57,7 @@ Stable version of the API [Access here](https://botflow.api.lappis.rocks/api-doc
 
 ## Generate jwtRS256 Key
 
-To run this project is necessary to create a jwtRS256 key in the private foder. To create the key run the following commands on the `server/private/` folder:
+To run this project is necessary to create a jwtRS256 key in the private folder. To create the key run the following commands on the `server/private/` folder:
 
 ``` sh
 ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
