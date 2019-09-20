@@ -39,7 +39,17 @@ class IntentsFile(APIView):
 
     def get(self, request, project_id):
         project = get_object_or_404(Project, pk=project_id)
+        stories = Story.objects.filter(project=project)
         intents = Intent.objects.filter(project=project)
+
+        stories_intents = []
+        for s in stories:
+            for c in s.content:
+                c = dict(c)
+                if c['type'] == 'intent':
+                    stories_intents.append(c['name'])
+
+        used_intents = filter(lambda intent: intent.name in stories_intents, intents)
 
         if not intents:
             raise Http404
@@ -47,7 +57,7 @@ class IntentsFile(APIView):
         parser = IntentParser()
         markdown_str = ''
 
-        for intent in intents:
+        for intent in used_intents:
             markdown_str += parser.parse(intent)
 
         return JsonResponse({'content': markdown_str})

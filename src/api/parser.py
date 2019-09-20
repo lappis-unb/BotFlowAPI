@@ -24,7 +24,7 @@ class StoryParser:
 
     
     def _utter_parser(self, utter):
-        return f'- {utter["name"]}\n'
+        return f'{4 * " "}- {utter["name"]}\n'
 
 
 class IntentParser:
@@ -48,7 +48,8 @@ class DomainParser:
     """
     def parse(self, project: Project):
         content = ''
-        
+       
+        stories = Story.objects.filter(project=project)
         intents = Intent.objects.filter(project=project)
         utters = Utter.objects.filter(project=project)
         entities = []
@@ -56,11 +57,26 @@ class DomainParser:
         if not intents and not utters:
             return ''
 
-        content += self._generic_list_parser('intents', [i.name for i in intents])
+        
+        stories_intents = []
+        stories_utters = []
+        
+        for s in stories:
+            for c in s.content:
+                c = dict(c)
+                if c['type'] == 'intent':
+                    stories_intents.append(c['name'])
+                else:
+                    stories_utters.append(c['name'])
+
+        used_intents = list(filter(lambda intent: intent.name in stories_intents, intents))
+        used_utters = list(filter(lambda utter: utter.name in stories_utters, utters))
+
+        content += self._generic_list_parser('intents', [i.name for i in used_intents])
        # content += self._generic_list_parser('entities', [e.name for e in entities])
-        content += self._generic_list_parser('actions', [u.name for u in utters])
-        content += self._templates_parser(utters)
-   
+        content += self._generic_list_parser('actions', [u.name for u in used_utters])
+        content += self._templates_parser(used_utters)
+
         return content
 
     def _generic_list_parser(self, name: str, elements: list):
@@ -68,13 +84,13 @@ class DomainParser:
 
         for e in elements:
             result += f'  - {e}\n'
-   
+
         return result
 
     def _templates_parser(self, utters: list):
         result = f'\ntemplates:\n'
 
-        for u in utters:    
+        for u in utters:
             ident = 2 * ' '
             result += f'{ident}{u.name}:\n'
             for texts in u.alternatives:
@@ -84,5 +100,5 @@ class DomainParser:
                     ident = 10 * ' '
                     result += f'{ident}{t}\n'
                     result += f'\n'
-        
+
         return result
