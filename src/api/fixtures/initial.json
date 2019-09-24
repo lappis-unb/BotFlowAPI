@@ -1,0 +1,10 @@
+[
+    {
+      "model": "api.project",
+      "pk": 1,
+      "fields": {
+        "name": "RasaBot",
+        "description": "This is a Rasa bot!"
+      }
+    }
+  ]
