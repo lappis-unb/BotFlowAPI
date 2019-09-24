@@ -34,6 +34,7 @@ class StorySerializer(serializers.ModelSerializer):
         for i, element in enumerate(obj.content):
             element_obj = elements[element['type']].filter(pk=element['id']).first()
             obj.content[i]['example'] = random.choice(getattr(element_obj, field[element['type']]))
+            obj.content[i]['name'] = getattr(element_obj, 'name')
 
     def get_content(self, obj):
         self.get_example(obj)
@@ -47,6 +48,8 @@ class StoryListSerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
 
     def get_content(self, obj):
+        StorySerializer.get_example(self, obj)
+
         return [{
             'name': content['name'],
             'type': content['type']
