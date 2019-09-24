@@ -1,0 +1,92 @@
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: botflow-api-production-ingress
+  namespace: botflow-api-production
+  labels:
+    app: botflow-api-production
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: botflow-api.lappis.rocks
+    http:
+      paths:
+      - backend:
+          serviceName: botflow-api-production-svc
+          servicePort: 80
+  tls:
+  - hosts:
+    - botflow-api.lappis.rocks
+    secretName: botflow-api-production-letsencrypt-prod-crt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: botflow-api-production-svc
+  namespace: botflow-api-production
+  labels:
+    app: botflow-api-production
+spec:
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: botflow-api-production
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: botflow-api-production
+  namespace: botflow-api-production
+  labels:
+    app: botflow-api-production
+spec:
+  selector:
+    matchLabels:
+      app: botflow-api-production
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: botflow-api-production
+    spec:
+      containers:
+      - name: botflow-api-production
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        command: ["./runserver.sh"]
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "true"
+        - name: MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-production
+              key: mongo-username
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-production
+              key: mongo-password
+        - name: MONGO_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-production
+              key: mongo-database
+        - name: MONGO_HOST
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-production
+              key: mongo-host
+        - name: MONGO_AUTHENTICATION_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-production
+              key: mongo-database

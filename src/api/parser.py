@@ -1,4 +1,4 @@
-from .models import Story, Intent, Utter
+from .models import Story, Intent, Utter, Project
 
 
 class StoryParser:
@@ -40,3 +40,49 @@ class IntentParser:
             content += f'- {s}\n'
 
         return name + content
+
+
+class DomainParser:
+    """
+    Generate a domain yaml string for a given project.
+    """
+    def parse(self, project: Project):
+        content = ''
+        
+        intents = Intent.objects.filter(project=project)
+        utters = Utter.objects.filter(project=project)
+        entities = []
+
+        if not intents and not utters:
+            return ''
+
+        content += self._generic_list_parser('intents', [i.name for i in intents])
+       # content += self._generic_list_parser('entities', [e.name for e in entities])
+        content += self._generic_list_parser('actions', [u.name for u in utters])
+        content += self._templates_parser(utters)
+   
+        return content
+
+    def _generic_list_parser(self, name: str, elements: list):
+        result = f'\n{name}:\n'
+
+        for e in elements:
+            result += f'  - {e}\n'
+   
+        return result
+
+    def _templates_parser(self, utters: list):
+        result = f'\ntemplates:\n'
+
+        for u in utters:    
+            ident = 2 * ' '
+            result += f'{ident}{u.name}:\n'
+            for texts in u.alternatives:
+                ident = 4 * ' '
+                result += f'{ident}- text: |\n'
+                for t in texts:
+                    ident = 10 * ' '
+                    result += f'{ident}{t}\n'
+                    result += f'\n'
+        
+        return result

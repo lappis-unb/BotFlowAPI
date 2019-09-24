@@ -1,0 +1,93 @@
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: botflow-api-staging-ingress
+  namespace: botflow-api-staging
+  labels:
+    app: botflow-api-staging
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+spec:
+  rules:
+  - host: botflow-api.dev.lappis.rocks
+    http:
+      paths:
+      - backend:
+          serviceName: botflow-api-staging-svc
+          servicePort: 80
+  tls:
+  - hosts:
+    - botflow-api.dev.lappis.rocks
+    secretName: botflow-api-staging-letsencrypt-prod-crt
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: botflow-api-staging-svc
+  namespace: botflow-api-staging
+  labels:
+    app: botflow-api-staging
+spec:
+  ports:
+  - port: 80
+    targetPort: 8000
+    protocol: TCP
+    name: http
+  selector:
+    app: botflow-api-staging
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: botflow-api-staging
+  namespace: botflow-api-staging
+  labels:
+    app: botflow-api-staging
+spec:
+  selector:
+    matchLabels:
+      app: botflow-api-staging
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: botflow-api-staging
+    spec:
+      containers:
+      - name: botflow-api-staging
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        command: ["./runserver.sh"]
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "true"
+        - name: MONGO_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-staging
+              key: mongo-username
+        - name: MONGO_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-staging
+              key: mongo-password
+        - name: MONGO_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-staging
+              key: mongo-database
+        - name: MONGO_HOST
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-staging
+              key: mongo-host
+        - name: MONGO_AUTHENTICATION_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: botflow-api-staging
+              key: mongo-database
+
