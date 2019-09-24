@@ -104,7 +104,7 @@ class ZipFile(APIView):
         coach_files = {
             'intents.md': intent_markdown_str, 
             'stories.md': stories_markdown_str, 
-            'domain.md': domain_markdown_str
+            'domain.yml': domain_markdown_str
         }
 
         file_name, file_path = get_zipped_files(project, coach_files)

@@ -7,3 +7,4 @@ __pycache__/
 *.dll
 *.egg
 *.sqlite3
+/src/api/utils/tmp
