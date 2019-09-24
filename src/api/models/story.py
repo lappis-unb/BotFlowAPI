@@ -48,6 +48,8 @@ class StoryListSerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
 
     def get_content(self, obj):
+        StorySerializer.get_example(self, obj)
+
         return [{
             'name': content['name'],
             'type': content['type']
