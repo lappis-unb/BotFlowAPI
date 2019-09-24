@@ -8,6 +8,7 @@ from api.models import Project, Story, Intent, Utter
 from api.parser import StoryParser, IntentParser
 from api.utils.handlers import handle_uploaded_file
 
+import re
 import markdown
 import html2markdown
 from ruamel.yaml import YAML
@@ -34,6 +35,44 @@ class StoriesFile(APIView):
             markdown_str += parser.parse(story)
         
         return JsonResponse({'content': markdown_str})  
+
+
+    """
+    Receives a put request with a project id and a Markdown file with story specs as arguments. Then parse and add this file into DB 
+    """
+    def put(self, request, project_id, format=None):
+        project = get_object_or_404(Project, pk=project_id)
+
+        try:
+            # Handle file from request
+            file_obj = request.data['file']
+            file_tmp = handle_uploaded_file(file_obj)
+            file_content = file_tmp.read().decode('utf-8')
+
+            # Parser markdown to html 
+            md = markdown.Markdown()
+            html = md.convert(file_content)
+            html = BeautifulSoup(html, features="html.parser")
+            story_names = html.findAll('h2')
+
+            content_list = []
+            a = html.findAll(re.compile('\<ul>'))
+
+            for content_options in html.findAll(re.compile('\<ul\>\<li\>\w*\<ul\>')):
+                pass
+
+            # Extract data
+            stories = []
+            for story_name, contents in zip(story_names, content_list):
+                pass
+            file_tmp.close()
+
+        except Exception as e:
+            raise e
+            return JsonResponse({'content': "File had problems during upload"})
+
+        return JsonResponse({'content': "File has been successfully uploaded"})
+
 
 
 class IntentsFile(APIView):
@@ -73,8 +112,6 @@ class IntentsFile(APIView):
             # Parser markdown to html 
             md = markdown.Markdown()
             html = md.convert(file_content)
-            print("MD", md)
-            md.reset()
             html = BeautifulSoup(html, features="html.parser")
             intent_names = html.findAll('h2')
             intent_list_samples = html.findAll('ul')
@@ -139,10 +176,11 @@ class UttersFile(APIView):
                 alternatives = []
 
                 for alternative in utters_list[utter_name]:
-                    alternatives.append(alternative['text'])
+                    alternatives.append(alternative['text'].split("\n\n"))
 
                 utter = {"name" : utter_name,
                          "alternatives" : [alternatives],
+                         "multiple_alternatives": True if len(alternatives) > 1 else False,
                          "project" : project }
 
                 utters.append(Utter(**utter))
