@@ -1,6 +1,13 @@
 from .models import Story, Intent, Utter, Project
 from unidecode import unidecode
 
+
+def format_utter(utter_name):
+    if not utter_name.startswith('utter_'):
+        return 'utter_' + utter_name
+    else:
+        return utter_name
+
 class StoryParser:
     """
     Generate a markdown string from a given
@@ -24,7 +31,7 @@ class StoryParser:
 
     
     def _utter_parser(self, utter):
-        return f'- {unidecode(utter["name"])}\n'
+        return f'- {unidecode(format_utter(utter["name"]))}\n'
 
 
 class IntentParser:
@@ -59,7 +66,7 @@ class DomainParser:
         content += self._generic_list_parser('intents', [unidecode(i.name) for i in intents])
        # content += self._generic_list_parser('entities', [e.name for e in entities])
         content += self._templates_parser(utters)
-        content += self._generic_list_parser('actions', [unidecode(u.name) for u in utters])
+        content += self._generic_list_parser('actions', [unidecode(format_utter(u.name)) for u in utters])
    
         return content
 
@@ -70,13 +77,18 @@ class DomainParser:
             result += f'  - {e}\n'
    
         return result + '\n'
+    
+    
+
+
 
     def _templates_parser(self, utters: list):
         result = f'templates:\n'
 
         for u in utters:    
             ident = 2 * ' '
-            result += f'{ident}{unidecode(u.name)}:\n'
+            utter_name = format_utter(u.name)
+            result += f'{ident}{unidecode(utter_name)}:\n'
             for texts in u.alternatives:
                 ident = 4 * ' '
                 result += f'{ident}- text: |\n'
