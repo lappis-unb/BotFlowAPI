@@ -139,55 +139,67 @@ class IntentsFile(APIView):
     def put(self, request, project_id, format=None):
         project = get_object_or_404(Project, pk=project_id)
 
-        try:
+        file_obj = request.data['file']
+        with handle_uploaded_file(file_obj) as file_tmp:
             # Handle file from request
-            file_obj = request.data['file']
-            file_tmp = handle_uploaded_file(file_obj)
             file_content = file_tmp.read().decode('utf-8')
 
             # Parser markdown to html 
             md = markdown.Markdown()
             html = md.convert(file_content)
             html = BeautifulSoup(html, features="html.parser")
-            intent_names = html.findAll('h2')
-            intent_list_samples = html.findAll('ul')
+            names = html.findAll('h2')
+            list_samples = html.findAll('ul')
 
             # Extract data
             intents = []
-            for intent_name, intent_samples in zip(intent_names, intent_list_samples):
-                if intent_name.string is not None:
-                    if "intent" in intent_name.string:                    
-                        intent_name = intent_name.string.split("intent:")[-1]
-                        s = BeautifulSoup(str(intent_samples), features="html.parser").findAll('li')
-                        
-                        samples = []
-                        for sample in s:
-                            sample_string = ""
-                            if sample.string is None:
-                                s = str(sample)
-                                s = s.replace("<li>", "")
-                                s = s.replace("</li>", "")
-                                sample_string = html2markdown.convert(s)
-                            else:
-                                sample_string = sample.string
+            for name, samples in zip(names, list_samples):
+                if name.string is not None and "intent" in name.string:                    
+                    name = name.string.split("intent:")[-1]
+                    intents.append(Intent(
+                        name=name,
+                        samples=[
+                            li.string or html2markdown.convert(innerHTML(li)).replace('# ', '#') 
+                            for li in samples.findAll('li')],
+                        project=project,
+                    ))
 
-                            samples.append(sample_string)
-
-                        intent = {"name" : intent_name,
-                                "samples" : samples,
-                                "project" : project }
-                        intents.append(Intent(**intent))
-            
-            Intent.objects.bulk_create(intents)
-            file_tmp.close()
-
-        except Exception as e:
-            raise e
-            return JsonResponse({'content': "File had problems during upload"})
-
+        bulk_update_unique(intents, 'name')
         return JsonResponse({'content': "File has been successfully uploaded"})
 
 
+def bulk_update_unique(items, attr='name'):
+    """
+    Save a list of elements that have a new value for the given attribute.
+    """
+    if not items:
+        return []
+
+    objects = type(items[0]).objects
+    query = {attr + '__in': [x.name for x in items]}
+    repeated = objects.filter(**query).values_list(attr, flat=True)
+    
+    # Check the database
+    if repeated:
+        print(f'Repeated values for {attr}:', ', '.join(repeated))
+        repeated = set(repeated)
+        items = [x for x in items if getattr(x, attr) not in repeated]
+    
+    # Check internal consistency
+    values = set()
+    items_final = []
+    for item in items:
+        value = getattr(item, attr)
+        if value in values:
+            print(f'Duplicated entry:', value)
+        else:
+            items_final.append(item)
+    
+    return objects.bulk_create(items)
+
+
+def innerHTML(element):
+    return element.decode_contents(formatter="html")
 
 class UttersFile(APIView):
     """
@@ -291,3 +303,77 @@ class ZipFile(APIView):
                 return response
         else:
             raise Http404
+
+
+from collections import deque, namedtuple
+Token = namedtuple('Token', ['type', 'data'])
+    
+
+def lex(story):
+    for line in story.splitlines():
+        line = line.strip()
+        if line.startwith('<!--') or not line:
+            continue
+        elif line.startwith('##'):
+            data = line[2:].strip()
+            yield Token('STORY', data)
+        elif line.startwith('*'):
+            data = line[1:].strip()
+            yield Token('INTENT', data)
+        elif line.startwith('-'):
+            data = line[1:].strip()
+            yield Token('UTTER', data)
+        else:
+            raise ValueError(f'invalid line: {line}')
+
+def parse(src):
+    parser = StoryParser(src)
+    return parser.parse()
+
+class StoryParser:
+    def __init__(self, src):
+        self.tokens = deque(lex(src)) 
+    
+    def parse(self):
+        stories = []
+        while self.tokens:
+            stories.append(self.story())
+
+    def story(self):
+        tks = self.tokens
+        story = tks.popleft()
+        assert story.type == 'STORY'
+        intents = []
+        while tks and tks[0].type == 'INTENT':
+            intents.append(self.intent())
+        return {'story': story.data, 'intents': intents}
+
+    def intent(self):
+        tks = self.tokens
+        intent = tks.popleft()
+        assert intent.type == 'INTENT'
+        utters = []
+        while tks and tks[0].type == 'UTTER':
+            utter = tks.popleft()
+            utters.append(utter.data)
+        return {'intent': intent.data, 'utters': utters}
+
+if __name__ == '__main__':
+    src = '''
+<!-- Comentario -->
+## Money 8.3
+* captacao
+    - utter_captacao
+    - utter_continuar_conversa
+
+## Money 10
+* lei_rouanet_valor_maximo_projeto
+    - utter_lei_rouanet_valor_maximo_projeto
+* lei_rouanet_valor_maximo_geral
+    - utter_lei_rouanet_valor_minimo
+    - utter_lei_rouanet_valor_maximo_pessoa_fisica
+    - utter_lei_rouanet_valor_maximo_pessoa_juridica
+    - utter_lei_rouanet_valor_maximo_regiao
+    - utter_continuar_conversa
+'''
+    print(parse(src))

@@ -4,6 +4,7 @@ from rest_framework import serializers
 import random
 
 class Intent(models.Model):
+    # TODO add unique=True to name field
     name = models.TextField()
     samples = models.ListField(default=[])
     project = models.EmbeddedModelField(
