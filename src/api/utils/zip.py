@@ -42,9 +42,14 @@ def get_zipped_files(project, files_dict):
 
     zip_path = os.path.join(tmp_dir, zip_filename)
 
+    zip_filenames = {}
+    zip_filenames['intents.md'] = 'data/intents/intents.md'
+    zip_filenames['stories.md'] = 'data/stories/stories.md'
+    zip_filenames['domain.yml'] = 'domain.yml'
+
     with zipfile.ZipFile(zip_path,'w') as zip: 
         for file in filenames: 
-            zip.write(file, os.path.basename(file))
+            zip.write(file, zip_filenames[os.path.basename(file)])
 
     return zip_filename, zip_path
 
