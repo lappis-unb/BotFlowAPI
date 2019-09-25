@@ -1,0 +1,267 @@
+[
+    {
+      "model": "api.project",
+      "pk": 1,
+      "fields": {
+        "name": "RasaBot",
+        "description": "This is a Rasa bot!"
+      }
+    },
+    {
+        "model": "api.intent",
+        "pk": 1,
+        "fields": {
+          "name": "diga_mais",
+          "samples": [
+              "como funciona",
+              "me diga mais",
+              "não entendi",
+              "nao entendi",
+              "não é isso",
+              "nao eh isso",
+              "como assim",
+              "e como funciona",
+              "nao tenho certeza"
+          ],
+          "project": 1
+        }
+    },
+    {
+        "model": "api.intent",
+        "pk": 2,
+        "fields": {
+          "name": "tudo_bem",
+          "samples": [
+              "oi, tudo bem",
+              "oi, como vai voce",
+              "como vao as coisas",
+              "opa tudo bem",
+              "to bem",
+              "tranquilo",
+              "estou bem",
+              "estou otimo",
+              "tudo bem e você",
+              "tudo bem",
+              "tudo bom",
+              "tá bem",
+              "ta bem",
+              "como vocês esta",
+              "como voce esta",
+              "como voce ta",
+              "como vai você",
+              "como vai voce",
+              "como vai vc",
+              "como vai",
+              "como ta",
+              "joia",
+              "joinha"
+          ],
+          "project": 1
+        }
+    },
+    {
+        "model": "api.intent",
+        "pk": 3,
+        "fields": {
+          "name": "out_of_scope",
+          "samples": [
+              "você fala sobre o meio ambiente",
+              "qual a origem do mundo",
+              "vc gosta de carnaval",
+              "batatinha quando nasce",
+              "imbecil",
+              "imbécil",
+              "nojento",
+              "chato",
+              "babaca",
+              "feio",
+              "burro"
+          ],
+          "project": 1
+        }
+    },
+    {
+        "model": "api.intent",
+        "pk": 4,
+        "fields": {
+          "name": "despedir",
+          "samples": [
+              "tchau obrigada",
+              "tchau",
+              "namaste",
+              "sayonara",
+              "au revoir",
+              "até logo",
+              "ate logo",
+              "até mais",
+              "ate mais",
+              "até breve",
+              "ate breve",
+              "até a próxima",
+              "ate a proxima",
+              "falou, valeu",
+              "flw vlw",
+              "beleza",
+              "blza",
+              "blz",
+              "valew",
+              "valeu"
+          ],
+          "project": 1
+        }
+    },
+    {
+        "model": "api.intent",
+        "pk": 5,
+        "fields": {
+            "name": "o_que_sei_falar",
+            "samples": [
+                "sobre o que você sabe falar",
+                "o que mais você sabe falar",
+                "quais assuntos você fala",
+                "o que você sabe ",
+                "lista de assuntos possiveis",
+                "quais as perguntas vc responde",
+                "quais as perquisar você responde",
+                "quero ajuda",
+                "meajuda",
+                "meajude",
+                "MEAJUD",
+                "MEAJDA",
+                "me ajuda",
+                "me ajude",
+                "ajuda eu",
+                "ajuda"
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.intent",
+        "pk": 6,
+        "fields": {
+            "name": "cumprimentar",
+             "samples": [
+                "com licenca",
+                "posso falar com voce",
+                "pode me tirar uma duvida",
+                "gostaria de tirar uma duvida",
+                "bom dia",
+                "boa tarde",
+                "boa noite",
+                "bonjour",
+                "bonsoir",
+                "olá",
+                "ola",
+                "oi",
+                "oiii",
+                "oie",
+                "oiee",
+                "ola boa tarde",
+                "hi",
+                "salut"
+           ],
+           "project": 1
+        } 
+    },
+    {
+        "model": "api.intent",
+        "pk": 7,
+        "fields": {
+            "name": "negar",
+             "samples": [
+                "não",
+                "nao",
+                "nao conheco",
+                "não quero",
+                "escolhi errado",
+                "falei errado",
+                "duvida",
+                "ainda não sei",
+                "nenhum",
+                "nunca",
+                "jamais"
+            ],
+            "project": 1
+        } 
+    },
+    {
+        "model": "api.utter",
+        "pk": 1,
+  
+        "fields": {
+          "name": "utter_default",
+          "multiple_alternatives": true,
+          "alternatives":[
+              ["Desculpe, ainda não sei falar sobre isso ou talvez não consegui entender direito. Você pode perguntar de novo de outro jeito?"],
+              ["Hummmm... Não sei se entendi. Pode escrever de outra forma?"],
+              ["Acho que não te entendi, você pode me perguntar de novo usando outras palavras?"],
+              ["Vamos tentar mais uma vez? Eu não consegui te entender direito, me pergunta de outro jeito?"]
+          ],
+          "project": 1
+        }
+      },
+      {
+          "model": "api.utter",
+          "pk": 2,
+          "fields": {
+              "name": "utter_diga_mais",
+              "multiple_alternatives": false,
+              "alternatives":[
+                  ["Por enquanto, só entendo perguntas completas. Como por exemplo 'qual é o melhor time do Brasil?'. Se você puder pergunta de novo de outro jeito :)"]
+              ],
+              "project": 1
+          }
+      },
+      {
+          "model": "api.utter",
+          "pk": 3,
+          "fields": {
+              "name": "utter_cumprimentar",
+              "multiple_alternatives": false,
+              "alternatives":[
+                  ["Oi, eu sou um bot, um assistente virtual! Uhuu! Manda aí um assunto que te interessa :) Para aprender como você pode interagir comigo basta escrever meajuda."]
+              ],
+              "project": 1
+          }
+      },
+      {
+          "model": "api.utter",
+          "pk": 4,
+          "fields": {
+              "name": "utter_despedir",
+              "multiple_alternatives": true,
+              "alternatives":[
+                  ["Foi um prazer te ajudar! Sempre que tiver alguma dúvida, volte aqui! Até logo!"],
+                  ["Foi um prazer te ajudar! Sempre que precisar, volte aqui! Até a próxima!"],
+                  ["Foi um prazer te ajudar! Quando surgir alguma dúvida, volte aqui! Até mais!"]
+              ],
+              "project": 1
+          }
+      },
+      {
+          "model": "api.utter",
+          "pk": 5,
+          "fields": {
+              "name": "utter_tudo_bem",
+              "multiple_alternatives": false,          
+              "alternatives":[ 
+                  ["Tudo bem, obrigada! Em que posso te ajudar?"]
+              ],
+              "project": 1
+          }
+      },
+      {
+          "model": "api.utter",
+          "pk": 6,
+          "fields": {
+              "name": "utter_continuar_conversa",
+              "multiple_alternatives": false,
+              "alternatives":[ 
+                  [" E aí, qual nosso próximo assunto?"]
+  
+              ],
+              "project": 1
+          }
+      } 
+  ]
