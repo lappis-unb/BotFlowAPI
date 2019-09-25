@@ -27,7 +27,7 @@ if Project.objects.count() < 1:
         Intent.objects.create(
             name=each['fields']['name'],
             samples=each['fields']['samples'],
-            project=Project.objects.filter(pk=1).first()
+            project=Project.objects.all().first()
         )  
         
     for each in models_dict['api.utter']:
@@ -35,7 +35,7 @@ if Project.objects.count() < 1:
             name=each['fields']['name'],
             multiple_alternatives=each['fields']['multiple_alternatives'],
             alternatives=each['fields']['alternatives'],
-            project=Project.objects.filter(pk=1).first()
+            project=Project.objects.all().first()
         )
 else:
     print("Database already contains objects. Skipping database seeding...")
