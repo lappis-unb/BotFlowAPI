@@ -190,7 +190,7 @@
         "pk": 1,
   
         "fields": {
-          "name": "default",
+          "name": "utter_default",
           "multiple_alternatives": true,
           "alternatives":[
               ["Desculpe, ainda não sei falar sobre isso ou talvez não consegui entender direito. Você pode perguntar de novo de outro jeito?"],
@@ -205,7 +205,7 @@
           "model": "api.utter",
           "pk": 2,
           "fields": {
-              "name": "diga_mais",
+              "name": "utter_diga_mais",
               "multiple_alternatives": false,
               "alternatives":[
                   ["Por enquanto, só entendo perguntas completas. Como por exemplo 'qual é o melhor time do Brasil?'. Se você puder pergunta de novo de outro jeito :)"]
@@ -217,7 +217,7 @@
           "model": "api.utter",
           "pk": 3,
           "fields": {
-              "name": "cumprimentar",
+              "name": "utter_cumprimentar",
               "multiple_alternatives": false,
               "alternatives":[
                   ["Oi, eu sou um bot, um assistente virtual! Uhuu! Manda aí um assunto que te interessa :) Para aprender como você pode interagir comigo basta escrever meajuda."]
@@ -229,7 +229,7 @@
           "model": "api.utter",
           "pk": 4,
           "fields": {
-              "name": "despedir",
+              "name": "utter_despedir",
               "multiple_alternatives": true,
               "alternatives":[
                   ["Foi um prazer te ajudar! Sempre que tiver alguma dúvida, volte aqui! Até logo!"],
