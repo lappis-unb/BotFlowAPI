@@ -16,7 +16,7 @@ class StoryParser:
             elif c['type'] == "utter":
                 body += self._utter_parser(c)
 
-        return name + body
+        return name + body + '\n'
 
 
     def _intent_parser(self, intent):
@@ -39,7 +39,7 @@ class IntentParser:
         for s in intent.samples:
             content += f'- {s}\n'
 
-        return name + content
+        return name + content + '\n'
 
 
 class DomainParser:
@@ -58,21 +58,21 @@ class DomainParser:
 
         content += self._generic_list_parser('intents', [i.name for i in intents])
        # content += self._generic_list_parser('entities', [e.name for e in entities])
-        content += self._generic_list_parser('actions', [u.name for u in utters])
         content += self._templates_parser(utters)
+        content += self._generic_list_parser('actions', [u.name for u in utters])
    
         return content
 
     def _generic_list_parser(self, name: str, elements: list):
-        result = f'\n{name}:\n'
+        result = f'{name}:\n'
 
         for e in elements:
             result += f'  - {e}\n'
    
-        return result
+        return result + '\n'
 
     def _templates_parser(self, utters: list):
-        result = f'\ntemplates:\n'
+        result = f'templates:\n'
 
         for u in utters:    
             ident = 2 * ' '
@@ -85,4 +85,4 @@ class DomainParser:
                     result += f'{ident}{t}\n'
                     result += f'\n'
         
-        return result
+        return result + '\n'
