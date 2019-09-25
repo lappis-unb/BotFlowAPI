@@ -34,7 +34,47 @@ class StoriesFile(APIView):
         for story in stories:
             markdown_str += parser.parse(story)
         
-        return JsonResponse({'content': markdown_str})  
+        return JsonResponse({'content': markdown_str})
+
+    def clean_str(string):
+        string = string.replace(" ", "")
+        string = string.replace("\n", "")        
+
+        return string
+
+
+    def markdown_parser(self, markdown_file):
+        stories = []
+        stories_file = markdown_file.split("## ")[1:]
+
+        for story in stories_file:
+            story = story.split("\n*")
+            story_name = story[0]
+            intents = story[1:]
+
+            content = []
+            for intent in intents:
+                intent = intent.split("\n    -")
+               
+                intent_name = StoriesFile.clean_str(intent[0])
+                utters = intent[1:]
+
+                intent = Intent.objects.get(name=intent_name)
+                content.append({"id": intent.id,
+                                "type": "intent"})
+
+
+                for utter in utters:
+                    utter_name = StoriesFile.clean_str(utter)
+                    utter = Utter.objects.get(name=utter_name)
+
+                content.append({"id": utter.id,
+                                "type": "utter"})
+
+            stories.append({"name": story_name,
+             "content": content})
+
+        return stories
 
 
     """
@@ -48,23 +88,17 @@ class StoriesFile(APIView):
             file_obj = request.data['file']
             file_tmp = handle_uploaded_file(file_obj)
             file_content = file_tmp.read().decode('utf-8')
+            
+            stories_dicts = StoriesFile().markdown_parser(file_content)
 
-            # Parser markdown to html 
-            md = markdown.Markdown()
-            html = md.convert(file_content)
-            html = BeautifulSoup(html, features="html.parser")
-            story_names = html.findAll('h2')
-
-            content_list = []
-            a = html.findAll(re.compile('\<ul>'))
-
-            for content_options in html.findAll(re.compile('\<ul\>\<li\>\w*\<ul\>')):
-                pass
-
-            # Extract data
             stories = []
-            for story_name, contents in zip(story_names, content_list):
-                pass
+            for story in stories_dicts:
+                story.update({"project": project})
+                print(story)
+                stories.append(Story(**story))
+
+            Story.objects.bulk_create(stories)
+
             file_tmp.close()
 
         except Exception as e:
