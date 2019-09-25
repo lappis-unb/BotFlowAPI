@@ -1,5 +1,5 @@
 from .models import Story, Intent, Utter, Project
-
+from unidecode import unidecode
 
 class StoryParser:
     """
@@ -7,24 +7,24 @@ class StoryParser:
     story object.
     """
     def parse(self, story: Story):
-        name = f'## {story.name}\n'
+        name = f'## {unidecode(story.name)}\n'
         body = ''
         
         for c in story.content:
             if c['type'] == "intent":
                 body += self._intent_parser(c)
             elif c['type'] == "utter":
-                body += self._utter_parser(c)
+                body += '\t' + self._utter_parser(c)
 
         return name + body + '\n'
 
 
     def _intent_parser(self, intent):
-        return f'* {intent["name"]}\n'
+        return f'* {unidecode(intent["name"])}\n'
 
     
     def _utter_parser(self, utter):
-        return f'- {utter["name"]}\n'
+        return f'- {unidecode(utter["name"])}\n'
 
 
 class IntentParser:
@@ -33,7 +33,7 @@ class IntentParser:
     intent object.
     """
     def parse(self, intent: Intent):
-        name = f'## intent:{intent.name}\n'
+        name = f'## intent:{unidecode(intent.name)}\n'
         content = ''
 
         for s in intent.samples:
@@ -56,15 +56,15 @@ class DomainParser:
         if not intents and not utters:
             return ''
 
-        content += self._generic_list_parser('intents', [i.name for i in intents])
+        content += self._generic_list_parser('intents', [unidecode(i.name) for i in intents])
        # content += self._generic_list_parser('entities', [e.name for e in entities])
         content += self._templates_parser(utters)
-        content += self._generic_list_parser('actions', [u.name for u in utters])
+        content += self._generic_list_parser('actions', [unidecode(u.name) for u in utters])
    
         return content
 
     def _generic_list_parser(self, name: str, elements: list):
-        result = f'{name}:\n'
+        result = f'{unidecode(name)}:\n'
 
         for e in elements:
             result += f'  - {e}\n'
@@ -76,7 +76,7 @@ class DomainParser:
 
         for u in utters:    
             ident = 2 * ' '
-            result += f'{ident}{u.name}:\n'
+            result += f'{ident}{unidecode(u.name)}:\n'
             for texts in u.alternatives:
                 ident = 4 * ' '
                 result += f'{ident}- text: |\n'
