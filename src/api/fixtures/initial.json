@@ -186,6 +186,224 @@
         } 
     },
     {
+        "model": "api.intent",
+        "pk": 8,
+        "fields": {
+          "name": "o_que_sei_falar",
+          "samples": [
+            "sobre o que você sabe falar",
+            "o que mais você sabe falar",
+            "quais assuntos você fala",
+            "o que você sabe ",
+            "lista de assuntos possiveis",
+            "quais as perguntas vc responde",
+            "quais as perquisar você responde",
+            "quero ajuda",
+            "meajuda",
+            "meajude",
+            "MEAJUD",
+            "MEAJDA",
+            "me ajuda",
+            "me ajude",
+            "ajuda eu",
+            "ajuda",
+            "menu"
+          ],
+
+        "project": 1
+      }
+    },
+
+    {
+        "model": "api.intent",
+        "pk": 9,
+        "fields": {
+          "name": "quem_criou_a_tais",
+          "samples": [
+            "como você foi construida",
+            "como voce foi construída",
+            "quem te criou",
+            "quem te desenvolveu",
+            "quem te programou",
+            "você tem pai",
+            "qual seu pai",
+            "onde voce nasceu",
+            "quando vc nasceu",
+            "quem te fez",
+            "quem te produziu",
+            "quem é seu pai",
+            "fez a tais",
+            "criou a tais",
+            "produziu a tais",
+            "desenvolveu a tais",
+            "desenvolveu",
+            "criou",
+            "produziu",
+            "programou"
+          ],
+
+        "project": 1
+      }
+    },
+
+    {
+        "model": "api.intent",
+        "pk": 10,
+        "fields": {
+          "name": "afirmar",
+          "samples": [
+            "se não for incomodo",
+            "claro que sim",
+            "posso sim",
+            "gostaria sim",
+            "sei bastante",
+            "preenchi sim",
+            "gostaria de saber mais",
+            "gostaria de mais detalhes",
+            "ja preenchi uma proposta",
+            "sim, preenchi minha proposta",
+            "quero",
+            "por favor",
+            "ja",
+            "já",
+            "sim",
+            "ta",
+            "ok",
+            "claro",
+            "confirmo",
+            "mais ou menos",
+            "me explique"
+        ],
+        "project": 1
+      }
+    },
+    {
+        "model": "api.intent",
+        "pk": 11,
+        "fields": {
+          "name": "tem_wpp",
+          "samples": [
+            "vamos conversar pelo whatsapp",
+            "vamos conversar pelo wpp",
+            "vamos falar pelo wpp",
+            "podemos conversar pelo whatsapp",
+            "podemos conversar pelo zap",
+            "podemos conversar pelo wpp",
+            "me passa seu whatsapp",
+            "me manda teu wpp",
+            "me passa seu wpp",
+            "me passa seu zap",
+            "vc tem whatsapp",
+            "você ta no whatapp",
+            "voce ta no whatsapp",
+            "vc tá no whatsapp",
+            "você tem whatsapp",
+            "você tem zap",
+            "vc tem zap",
+            "vc tem wpp",
+            "você tem wpp",
+            "vc ta no wpp",
+            "whatsapp",
+            "wpp",
+            "zap"
+          ],
+
+        "project": 1
+      }
+    },
+    {
+        "model": "api.intent",
+        "pk": 12,
+        "fields": {
+          "name": "agradecimento",
+          "samples": [
+            "perfeito muito agradecido",
+            "obrigado tirou minhas duvidas",
+            "obrigada por me ajudar",
+            "obrigado por me ajudar",
+            "obrigada, tais",
+            "obrigado, tais",
+            "agradecido",
+            "agradecida",
+            "obrigada",
+            "obrigado",
+            "grato",
+            "grata",
+            "thanks",
+            "thank you",
+            "merci",
+            "gracias"
+          ],
+
+        "project": 1
+      }
+    },
+    {
+        "model": "api.intent",
+        "pk": 13,
+        "fields": {
+          "name": "contato",
+          "samples": [
+            "eu ligo para quem para falar sobre o cadastro no salic",
+            "algum telefone que eu possa entrar em contato",
+            "necessito de um telefone para falar sobre a lei rouanet",
+            "pode me mandar um telefone para eu falar com alguma pessoa",
+            "vc pode me mandar um telefone de alguém",
+            "quero falar no telefone com alguém",
+            "quero falar com uma pessoa",
+            "eu preciso de um telefone de contato",
+            "gostaria de conversar com o atendente humano",
+            "telefone de contato",
+            "quero entrar em contato",
+            "me mande o telefone",
+            "telefone de alguém",
+            "telefone de alguma pessoa",
+            "atendente humano",
+            "e-mails dúvidas",
+            "email duvidas",
+            "e-mail duvidas",
+            "contato perguntas",
+            "telefone duvidas",
+            "contato ",
+            "telefone",
+            "email"
+          ],
+
+        "project": 1
+      }
+    },
+    {
+        "model": "api.intent",
+        "pk": 14,
+        "fields": {
+          "name": "endereco",
+          "samples": [
+            "quero saber o endereço da Secretaria Especial da Cultura",
+            "quero saber o endereco da Secretaria Especial da Cultura",
+            "como faço pra chegar na Secretaria Especial da Cultura",
+            "como faco pra chegar na Secretaria Especial da Cultura",
+            "qual o endereço da Secretaria Especial da Cultura",
+            "qual o endereco da Secretaria Especial da Cultura",
+            "me diz o endereço da Secretaria Especial da Cultura",
+            "me fala o endereço da Secretaria Especial da Cultura",
+            "endereço Secretaria Especial da Cultura",
+            "endereco Secretaria Especial da CUltura",
+            "qual o endereço do minc",
+            "qual o endereco do Minc",
+            "endereço Secretaria",
+            "endereco Secretaria",
+            "qual endereço",
+            "qual endereco",
+            "endereço minc",
+            "endereco minc",
+            "endereço",
+            "endereco"
+          ],
+
+        "project": 1
+      }
+    },
+    {
         "model": "api.utter",
         "pk": 1,
   
@@ -263,5 +481,258 @@
               ],
               "project": 1
           }
-      } 
-  ]
+      },
+      {
+        "model": "api.utter",
+        "pk": 7,
+        "fields": {
+            "name": "utter_contato",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["Para entrar em contato por meio do Suporte bastante acessar este link: lappis.rocks"]
+
+            ],
+            "project": 1
+        }
+    }, 
+    {
+        "model": "api.utter",
+        "pk": 8,
+        "fields": {
+            "name": "utter_endereco",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["O Lappis fica na Universidade de Brasília, campus do Gama"]
+
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 9,
+        "fields": {
+            "name": "utter_definicao",
+            "multiple_alternatives": true,
+            "alternatives":[ 
+                ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura."],
+                ["Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas."],
+                ["Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou toda software livre :P"],
+                ["Em cada interação que temos aqui, eu aprendendo mais para que a gente se comunique melhor."],
+                ["Obrigada por conversar comigo!"]
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 10,
+        "fields": {
+            "name": "utter_quem_criou_a_tais",
+            "multiple_alternatives": true,
+            "alternatives":[ 
+                ["Fui desenvolvida pelo LAPPIS (Laboratório Avançado de Produção Pesquisa e Inovação em Software) na Universidade de Brasília, um laboratório super inovador e descolado!"],
+                ["Se quiser me conhecer mais, acesse o meu projeto :) https://github.com/lappis-unb/tais"]
+
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 11,
+        "fields": {
+            "name": "utter_elogios:",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["Obrigada! É sempre bom dar e receber elogios :P"]
+
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 12,
+        "fields": {
+            "name": "utter_tem_wpp",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["Eu não tenho wpp, eu só posso me comunicar com você aqui pelo portal, aqui é minha casa."]
+
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 13,
+        "fields": {
+            "name": "utter_o_que_sei_falar:",
+            "multiple_alternatives": true,
+            "alternatives":[ 
+                ["Veja alguns dos assuntos em que posso te ajudar :)"],
+                ["Agora que você já sabe do que podemos conversar, vou te dar outras dicas..."],
+                ["Eu consigo te entender melhor quando você me faz perguntas curtas e me manda uma pergunta de cada vez."],
+                ["Assim... espera eu te responder daí você me manda outra!"],
+                ["Bom, acho que já falei demais! Agora é sua vez... o que você deseja saber?"]
+
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 14,
+        "fields": {
+            "name": "utter_menu",
+            "multiple_alternatives": true,
+            "alternatives":[ 
+                ["Podemos conversar sobre como submeter um projeto, as etapas, algumas dúvidas operacionais…"],
+                ["Ou se você já tiver um projeto cadastrado, a gente pode falar sobre isso também."],
+                ["Para lembrar dos assuntos que eu domino, é só digitar: MEAJUDA"],
+                ["E aí, por onde vamos começar?"]
+
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 15,
+        "fields": {
+            "name": "utter_agradecimento",
+            "multiple_alternatives": true,
+            "alternatives":[ 
+                ["De nada, é sempre um prazer ajudar!"],
+                ["Qual o próximo assunto que te interessa?"]
+
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 16,
+        "fields": {
+            "name": "utter_definicao_tais",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura.",
+                "Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas. Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou toda software livre :P",
+                "Em cada interação que temos aqui, eu aprendendo mais para que a gente se comunique melhor. Obrigada por conversar comigo!"]
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 17,
+        "fields": {
+            "name": "utter_objetivo",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["Mas antes, para a nossa conversa ser mais eficiente, você quer saber como submeter uma proposta?"]
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 1,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "quem_criou_a_tais"},
+                {"type": "utter", "name": "utter_definicao_tais"},
+                {"type": "utter", "name": "utter_objetivo"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 2,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "intent", "name": "tudo_bem"},
+                {"type": "utter", "name": "utter_tudo_bem"},
+                {"type": "utter", "name": "utter_menu"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 3,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "tem_wpp"},
+                {"type": "utter", "name": "utter_tem_wpp"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 4,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "intent", "name": "tem_wpp"},
+                {"type": "utter", "name": "utter_tem_wpp"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 5,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "contato"},
+                {"type": "utter", "name": "utter_contato"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 6,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "utter", "name": "utter_menu"},
+                {"type": "intent", "name": "contato"},
+                {"type": "utter", "name": "utter_contato"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 7,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "endereco"},
+                {"type": "utter", "name": "utter_endereco"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 8,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "utter", "name": "utter_menu"},
+                {"type": "intent", "name": "endereco"},
+                {"type": "utter", "name": "utter_endereco"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    }
+]
