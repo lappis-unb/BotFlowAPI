@@ -22,6 +22,21 @@ def decode_story_file(src):
     return decoder.decode()
 
 
+def decode_intent_file(src):
+    """
+    Parse a intent file and return a list of documents with the format:
+
+    [{
+        'intent': <name>,
+        'utters': [<utter-1>, <utter-2>, ...]
+     }, 
+        ...
+    ]
+    """
+    decoder = IntentDecoder(src)
+    return decoder.decode()
+
+
 #
 # Auxiliary classes
 #
@@ -73,3 +88,42 @@ class StoryDecoder:
             utter = tks.popleft()
             utters.append(utter.data)
         return {'intent': intent.data, 'utters': utters}
+
+
+
+class IntentDecoder:
+    """
+    Recursive desecent parser for intents (not part of public API)
+    """
+    def __init__(self, src):
+        self.tokens = deque(self.lex(src)) 
+
+    def lex(self, src):
+        for line in src.splitlines():
+            line = line.strip()
+            if line.startswith('<!--') or not line:
+                continue
+            elif line.startswith('##'):
+                data = line[2:].strip()
+                yield Token('INTENT', data)
+            elif line.startswith('-'):
+                data = line[1:].strip()
+                yield Token('TEXT', data)
+            else:
+                raise ValueError(f'invalid line: {line}')
+    
+    def decode(self):
+        intents = []
+        while self.tokens:
+            intents.append(self.intent())
+        return intents
+
+    def intent(self):
+        tks = self.tokens
+        intent = tks.popleft()
+        assert intent.type == 'INTENT'
+        texts = []
+        while tks and tks[0].type == 'TEXT':
+            text = tks.popleft()
+            texts.append(text.data)
+        return {'intent': intent.data, 'texts': texts}

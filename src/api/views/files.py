@@ -9,7 +9,7 @@ from api.models import Project, Story, Intent, Utter
 from api.parser import StoryParser, IntentParser, DomainParser
 from api.utils.handlers import handle_uploaded_file
 from api.utils import get_zipped_files
-from api.decoder import decode_story_file
+from api.decoder import decode_story_file, decode_intent_file
 
 import os
 import markdown
@@ -125,26 +125,15 @@ class IntentsFile(APIView):
         with handle_uploaded_file(file_obj) as file_tmp:
             # Handle file from request
             file_content = file_tmp.read().decode('utf-8')
-
-            # Parser markdown to html 
-            md = markdown.Markdown()
-            html = md.convert(file_content)
-            html = BeautifulSoup(html, features="html.parser")
-            names = html.findAll('h2')
-            list_samples = html.findAll('ul')
-
-            # Extract data
-            intents = []
-            for name, samples in zip(names, list_samples):
-                if name.string is not None and "intent" in name.string:                    
-                    name = name.string.split("intent:")[-1]
-                    intents.append(Intent(
-                        name=name,
-                        samples=[
-                            li.string or html2markdown.convert(innerHTML(li)).replace('# ', '#') 
-                            for li in samples.findAll('li')],
-                        project=project,
-                    ))
+            
+            intent_dicts = decode_intent_file(file_content)
+            intents = []            
+            for intent in intent_dicts:            
+                intents.append(Intent(
+                    name=intent['intent'].replace("intent:", ""),
+                    samples=intent['texts'],
+                    project=project,
+                ))
 
         bulk_update_unique(intents, 'name')
         return JsonResponse({'content': "File has been successfully uploaded"})
