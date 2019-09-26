@@ -513,7 +513,7 @@
         "pk": 9,
         "fields": {
             "name": "utter_definicao",
-            "multiple_alternatives": false,
+            "multiple_alternatives": true,
             "alternatives":[ 
                 ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura."],
                 ["Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas."],
@@ -529,7 +529,7 @@
         "pk": 10,
         "fields": {
             "name": "utter_quem_criou_a_tais",
-            "multiple_alternatives": false,
+            "multiple_alternatives": true,
             "alternatives":[ 
                 ["Fui desenvolvida pelo LAPPIS (Laboratório Avançado de Produção Pesquisa e Inovação em Software) na Universidade de Brasília, um laboratório super inovador e descolado!"],
                 ["Se quiser me conhecer mais, acesse o meu projeto :) https://github.com/lappis-unb/tais"]
@@ -569,7 +569,7 @@
         "pk": 13,
         "fields": {
             "name": "utter_o_que_sei_falar:",
-            "multiple_alternatives": false,
+            "multiple_alternatives": true,
             "alternatives":[ 
                 ["Veja alguns dos assuntos em que posso te ajudar :)"],
                 ["Agora que você já sabe do que podemos conversar, vou te dar outras dicas..."],
@@ -586,7 +586,7 @@
         "pk": 14,
         "fields": {
             "name": "utter_menu",
-            "multiple_alternatives": false,
+            "multiple_alternatives": true,
             "alternatives":[ 
                 ["Podemos conversar sobre como submeter um projeto, as etapas, algumas dúvidas operacionais…"],
                 ["Ou se você já tiver um projeto cadastrado, a gente pode falar sobre isso também."],
@@ -602,13 +602,137 @@
         "pk": 15,
         "fields": {
             "name": "utter_agradecimento",
-            "multiple_alternatives": false,
+            "multiple_alternatives": true,
             "alternatives":[ 
                 ["De nada, é sempre um prazer ajudar!"],
                 ["Qual o próximo assunto que te interessa?"]
 
             ],
             "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 16,
+        "fields": {
+            "name": "utter_definicao_tais",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura.",
+                "Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas. Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou toda software livre :P",
+                "Em cada interação que temos aqui, eu aprendendo mais para que a gente se comunique melhor. Obrigada por conversar comigo!"]
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.utter",
+        "pk": 17,
+        "fields": {
+            "name": "utter_objetivo",
+            "multiple_alternatives": false,
+            "alternatives":[ 
+                ["Mas antes, para a nossa conversa ser mais eficiente, você quer saber como submeter uma proposta?"]
+            ],
+            "project": 1
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 1,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "quem_criou_a_tais"},
+                {"type": "utter", "name": "utter_definicao_tais"},
+                {"type": "utter", "name": "utter_objetivo"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 2,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "intent", "name": "tudo_bem"},
+                {"type": "utter", "name": "utter_tudo_bem"},
+                {"type": "utter", "name": "utter_menu"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 3,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "tem_wpp"},
+                {"type": "utter", "name": "utter_tem_wpp"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 4,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "intent", "name": "tem_wpp"},
+                {"type": "utter", "name": "utter_tem_wpp"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 5,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "contato"},
+                {"type": "utter", "name": "utter_contato"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 6,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "utter", "name": "utter_menu"},
+                {"type": "intent", "name": "contato"},
+                {"type": "utter", "name": "utter_contato"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 7,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "endereco"},
+                {"type": "utter", "name": "utter_endereco"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
+        }
+    },
+    {
+        "model": "api.story",
+        "pk": 8,
+        "fields": {
+            "content":[
+                {"type": "intent", "name": "cumprimentar"},
+                {"type": "utter", "name": "utter_cumprimentar"},
+                {"type": "utter", "name": "utter_menu"},
+                {"type": "intent", "name": "endereco"},
+                {"type": "utter", "name": "utter_endereco"},
+                {"type": "utter", "name": "utter_continuar_conversa"}
+            ]
         }
     }
 ]
