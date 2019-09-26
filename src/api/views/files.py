@@ -9,6 +9,7 @@ from api.models import Project, Story, Intent, Utter
 from api.parser import StoryParser, IntentParser, DomainParser
 from api.utils.handlers import handle_uploaded_file
 from api.utils import get_zipped_files
+from api.decoder import decode_story_file
 
 import os
 import markdown
@@ -38,47 +39,6 @@ class StoriesFile(APIView):
         
         return JsonResponse({'content': markdown_str})
 
-    def clean_str(string):
-        string = string.replace(" ", "")
-        string = string.replace("\n", "")        
-
-        return string
-
-
-    def markdown_parser(self, markdown_file):
-        stories = []
-        stories_file = markdown_file.split("## ")[1:]
-
-        for story in stories_file:
-            story = story.split("\n*")
-            story_name = story[0]
-            intents = story[1:]
-
-            content = []
-            for intent in intents:
-                intent = intent.split("\n    -")
-               
-                intent_name = StoriesFile.clean_str(intent[0])
-                utters = intent[1:]
-
-                intent = Intent.objects.get(name=intent_name)
-                content.append({"id": intent.id,
-                                "type": "intent"})
-
-
-                for utter in utters:
-                    utter_name = StoriesFile.clean_str(utter)
-                    utter = Utter.objects.get(name=utter_name)
-
-                content.append({"id": utter.id,
-                                "type": "utter"})
-
-            stories.append({"name": story_name,
-             "content": content})
-
-        return stories
-
-
     """
     Receives a put request with a project id and a Markdown file with story specs as arguments. Then parse and add this file into DB 
     """
@@ -88,20 +48,42 @@ class StoriesFile(APIView):
         try:
             # Handle file from request
             file_obj = request.data['file']
-            file_tmp = handle_uploaded_file(file_obj)
-            file_content = file_tmp.read().decode('utf-8')
             
-            stories_dicts = StoriesFile().markdown_parser(file_content)
+            with handle_uploaded_file(file_obj) as file_tmp:
+                file_content = file_tmp.read().decode('utf-8')
 
-            stories = []
-            for story in stories_dicts:
-                story.update({"project": project})
-                print(story)
-                stories.append(Story(**story))
+                stories_dicts = decode_story_file(file_content)
+                
+                stories = []
+                for story in stories_dicts:
+                    content = []
+                    for intent in story['intents']:
+                        content.append(
+                            {
+                                "id": Intent.objects.get(name=intent['intent']).id,
+                                "type": "intent" 
+                            }
+                        )
+                        for utter in intent['utters']:
+                            content.append(
+                                {
+                                    "id": Utter.objects.get(name=utter).id,
+                                    "type": "utter" 
+                                }
+                            )
 
-            Story.objects.bulk_create(stories)
+                    print(content)
+                    stories.append(
+                        {
+                            "name": story['story'],
+                            "content": content,
+                            "project": project
+                        }
+                    )
 
-            file_tmp.close()
+
+            # Story.objects.bulk_create(stories)
+
 
         except Exception as e:
             raise e
@@ -209,38 +191,30 @@ class UttersFile(APIView):
     def put(self, request, project_id, format=None):
         project = get_object_or_404(Project, pk=project_id)
 
-        try:
-            # Handle file from request
-            file_obj = request.data['file']
-            file_tmp = handle_uploaded_file(file_obj)
+        # Handle file from request
+        file_obj = request.data['file']
+        file_tmp = handle_uploaded_file(file_obj)
 
+        with handle_uploaded_file(file_obj) as file_tmp:
             # Handle yaml
             yaml=YAML(typ="safe")
             domain = yaml.load(file_tmp)
             
             utters_list = domain['templates']
             utters = []
-            for utter_name in utters_list.keys():
-                alternatives = []
-
-                for alternative in utters_list[utter_name]:
-                    alternatives.append(alternative['text'].split("\n\n"))
-
-                utter = {"name" : utter_name,
-                         "alternatives" : [alternatives],
-                         "multiple_alternatives": True if len(alternatives) > 1 else False,
-                         "project" : project }
-
-                utters.append(Utter(**utter))
             
-            Utter.objects.bulk_create(utters)
+            for utter_name in utters_list.keys():
+                alternatives = [x['text'].split("\n\n") for x in utters_list[utter_name]]
 
-            file_tmp.close()
+                utters.append(Utter(
+                    name= utter_name,
+                    alternatives=[alternatives],
+                    multiple_alternatives=True if len(alternatives) > 1 else False,
+                    project=project
+                ))
+                
 
-        except Exception as e:
-            raise e
-            return JsonResponse({'content': "File had problems during upload"})
-
+        bulk_update_unique(utters, 'name')
         return JsonResponse({'content': "File has been successfully uploaded"})
 
 class DomainFile(APIView):
@@ -304,76 +278,3 @@ class ZipFile(APIView):
         else:
             raise Http404
 
-
-from collections import deque, namedtuple
-Token = namedtuple('Token', ['type', 'data'])
-    
-
-def lex(story):
-    for line in story.splitlines():
-        line = line.strip()
-        if line.startwith('<!--') or not line:
-            continue
-        elif line.startwith('##'):
-            data = line[2:].strip()
-            yield Token('STORY', data)
-        elif line.startwith('*'):
-            data = line[1:].strip()
-            yield Token('INTENT', data)
-        elif line.startwith('-'):
-            data = line[1:].strip()
-            yield Token('UTTER', data)
-        else:
-            raise ValueError(f'invalid line: {line}')
-
-def parse(src):
-    parser = StoryParser(src)
-    return parser.parse()
-
-class StoryParser:
-    def __init__(self, src):
-        self.tokens = deque(lex(src)) 
-    
-    def parse(self):
-        stories = []
-        while self.tokens:
-            stories.append(self.story())
-
-    def story(self):
-        tks = self.tokens
-        story = tks.popleft()
-        assert story.type == 'STORY'
-        intents = []
-        while tks and tks[0].type == 'INTENT':
-            intents.append(self.intent())
-        return {'story': story.data, 'intents': intents}
-
-    def intent(self):
-        tks = self.tokens
-        intent = tks.popleft()
-        assert intent.type == 'INTENT'
-        utters = []
-        while tks and tks[0].type == 'UTTER':
-            utter = tks.popleft()
-            utters.append(utter.data)
-        return {'intent': intent.data, 'utters': utters}
-
-if __name__ == '__main__':
-    src = '''
-<!-- Comentario -->
-## Money 8.3
-* captacao
-    - utter_captacao
-    - utter_continuar_conversa
-
-## Money 10
-* lei_rouanet_valor_maximo_projeto
-    - utter_lei_rouanet_valor_maximo_projeto
-* lei_rouanet_valor_maximo_geral
-    - utter_lei_rouanet_valor_minimo
-    - utter_lei_rouanet_valor_maximo_pessoa_fisica
-    - utter_lei_rouanet_valor_maximo_pessoa_juridica
-    - utter_lei_rouanet_valor_maximo_regiao
-    - utter_continuar_conversa
-'''
-    print(parse(src))

@@ -1,10 +1,8 @@
-
 from collections import deque, namedtuple
 
 Token = namedtuple('Token', ['type', 'data'])
     
-
-def parse_story(src):
+def decode_story_file(src):
     """
     Parse a story file and return a list of documents with the format:
 
@@ -20,14 +18,14 @@ def parse_story(src):
         ...
     ]
     """
-    parser = StoryParser(src)
-    return parser.parse()
+    decoder = StoryDecoder(src)
+    return decoder.decode()
 
 
 #
 # Auxiliary classes
 #
-class StoryParser:
+class StoryDecoder:
     """
     Recursive desecent parser for stories (not part of public API)
     """
@@ -51,7 +49,7 @@ class StoryParser:
             else:
                 raise ValueError(f'invalid line: {line}')
     
-    def parse(self):
+    def decode(self):
         stories = []
         while self.tokens:
             stories.append(self.story())
@@ -75,24 +73,3 @@ class StoryParser:
             utter = tks.popleft()
             utters.append(utter.data)
         return {'intent': intent.data, 'utters': utters}
-
-if __name__ == '__main__':
-    from pprint import pprint
-    src = '''
-<!-- Comentario -->
-## Money 8.3
-* captacao
-    - utter_captacao
-    - utter_continuar_conversa
-
-## Money 10
-* lei_rouanet_valor_maximo_projeto
-    - utter_lei_rouanet_valor_maximo_projeto
-* lei_rouanet_valor_maximo_geral
-    - utter_lei_rouanet_valor_minimo
-    - utter_lei_rouanet_valor_maximo_pessoa_fisica
-    - utter_lei_rouanet_valor_maximo_pessoa_juridica
-    - utter_lei_rouanet_valor_maximo_regiao
-    - utter_continuar_conversa
-'''
-    pprint(parse_story(src))
