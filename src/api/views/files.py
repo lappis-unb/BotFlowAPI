@@ -10,12 +10,10 @@ from api.parser import StoryParser, IntentParser, DomainParser
 from api.utils.handlers import handle_uploaded_file
 from api.utils import get_zipped_files
 from api.decoder import decode_story_file, decode_intent_file
+from api.utils.db_utils import bulk_update_unique
 
 import os
-import markdown
-import html2markdown
 from ruamel.yaml import YAML
-from bs4 import BeautifulSoup
 
 class StoriesFile(APIView):
     """
@@ -45,49 +43,29 @@ class StoriesFile(APIView):
     def put(self, request, project_id, format=None):
         project = get_object_or_404(Project, pk=project_id)
 
-        try:
-            # Handle file from request
-            file_obj = request.data['file']
+        # Handle file from request
+        file_obj = request.data['file']
+        
+        with handle_uploaded_file(file_obj) as file_tmp:
+            file_content = file_tmp.read().decode('utf-8')
+            stories_dicts = decode_story_file(file_content)
             
-            with handle_uploaded_file(file_obj) as file_tmp:
-                file_content = file_tmp.read().decode('utf-8')
+            stories = []
+            for story in stories_dicts:
+                content = []
+                for intent in story['intents']:
+                    content.append({"id": Intent.objects.get(name=intent['intent']).id, "type": "intent" })
 
-                stories_dicts = decode_story_file(file_content)
-                
-                stories = []
-                for story in stories_dicts:
-                    content = []
-                    for intent in story['intents']:
-                        content.append(
-                            {
-                                "id": Intent.objects.get(name=intent['intent']).id,
-                                "type": "intent" 
-                            }
-                        )
-                        for utter in intent['utters']:
-                            content.append(
-                                {
-                                    "id": Utter.objects.get(name=utter).id,
-                                    "type": "utter" 
-                                }
-                            )
+                    for utter in intent['utters']:
+                        content.append({"id": Utter.objects.get(name=utter.replace("utter_","")).id, "type": "utter" })
 
-                    print(content)
-                    stories.append(
-                        {
-                            "name": story['story'],
-                            "content": content,
-                            "project": project
-                        }
-                    )
+                stories.append(Story(
+                    name=story['story'],
+                    content=content,
+                    project=project
+                ))
 
-
-            # Story.objects.bulk_create(stories)
-
-
-        except Exception as e:
-            raise e
-            return JsonResponse({'content': "File had problems during upload"})
+        Story.objects.bulk_create(stories)
 
         return JsonResponse({'content': "File has been successfully uploaded"})
 
@@ -130,7 +108,7 @@ class IntentsFile(APIView):
             intents = []            
             for intent in intent_dicts:            
                 intents.append(Intent(
-                    name=intent['intent'].replace("intent:", ""),
+                    name=intent['intent'].replace(" ","").replace("intent:", ""),
                     samples=intent['texts'],
                     project=project,
                 ))
@@ -138,39 +116,6 @@ class IntentsFile(APIView):
         bulk_update_unique(intents, 'name')
         return JsonResponse({'content': "File has been successfully uploaded"})
 
-
-def bulk_update_unique(items, attr='name'):
-    """
-    Save a list of elements that have a new value for the given attribute.
-    """
-    if not items:
-        return []
-
-    objects = type(items[0]).objects
-    query = {attr + '__in': [x.name for x in items]}
-    repeated = objects.filter(**query).values_list(attr, flat=True)
-    
-    # Check the database
-    if repeated:
-        print(f'Repeated values for {attr}:', ', '.join(repeated))
-        repeated = set(repeated)
-        items = [x for x in items if getattr(x, attr) not in repeated]
-    
-    # Check internal consistency
-    values = set()
-    items_final = []
-    for item in items:
-        value = getattr(item, attr)
-        if value in values:
-            print(f'Duplicated entry:', value)
-        else:
-            items_final.append(item)
-    
-    return objects.bulk_create(items)
-
-
-def innerHTML(element):
-    return element.decode_contents(formatter="html")
 
 class UttersFile(APIView):
     """
@@ -196,7 +141,7 @@ class UttersFile(APIView):
                 alternatives = [x['text'].split("\n\n") for x in utters_list[utter_name]]
 
                 utters.append(Utter(
-                    name= utter_name,
+                    name= utter_name.strip().replace("utter_",""),
                     alternatives=[alternatives],
                     multiple_alternatives=True if len(alternatives) > 1 else False,
                     project=project
