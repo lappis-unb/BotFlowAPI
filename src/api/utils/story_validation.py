@@ -1,4 +1,4 @@
-from api.models import Intent, Utter
+from api.models import Intent, Utter, Story
 
 def intent_exists(id):
     return len(Intent.objects.filter(id=id)) > 0
@@ -43,5 +43,13 @@ def validate_story(data):
         return False
 
     return True
-            
+
+def delete_related_stories(deleted_obj, type_str):
+        stories = Story.objects.all()
+        stories_to_update = set()
+
+        for story in stories:
+            for element in story.content:
+                if element['type'] == type_str and element['id'] == deleted_obj.id:
+                    story.delete()
         
