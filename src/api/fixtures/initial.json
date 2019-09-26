@@ -317,7 +317,7 @@
         "fields": {
           "name": "agradecimento",
           "samples": [
-            "perfeito muito agradecido"
+            "perfeito muito agradecido",
             "obrigado tirou minhas duvidas",
             "obrigada por me ajudar",
             "obrigado por me ajudar",
@@ -489,8 +489,7 @@
             "name": "utter_contato",
             "multiple_alternatives": false,
             "alternatives":[ 
-                ["Para entrar em contato por meio do Suporte bastante acessar este link:
-                lappis.rocks"]
+                ["Para entrar em contato por meio do Suporte bastante acessar este link: lappis.rocks"]
 
             ],
             "project": 1
