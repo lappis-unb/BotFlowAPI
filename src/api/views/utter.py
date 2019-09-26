@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Utter, UtterSerializer, Project, UtterListSerializer, UtterExampleSerializer
-from api.utils import request_to_dict, validate_utter
+from api.utils import request_to_dict, validate_utter, delete_related_stories
 from api.webhook import intents_delete_hook, stories_delete_hook, domain_delete_hook
 
 
@@ -53,6 +53,7 @@ class ListUtters(APIView):
 
     def delete(self, request, project_id=None, utter_id=None, format=None):
         utter = get_object_or_404(Utter, pk=utter_id)
+        delete_related_stories(utter, 'utter')
         utter.delete()
         intents_delete_hook(project_id)
         stories_delete_hook(project_id)

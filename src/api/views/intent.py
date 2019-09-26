@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from api.models import Intent, IntentSerializer, Project, IntentListSerializer, IntentExampleSerializer
-from api.utils import request_to_dict, validate_intent
+from api.utils import request_to_dict, validate_intent, delete_related_stories
 from api.webhook import stories_delete_hook, intents_delete_hook, domain_delete_hook
 
 
@@ -50,6 +50,7 @@ class ListIntents(APIView):
 
     def delete(self, request, project_id=None, intent_id=None, format=None):
         intent = get_object_or_404(Intent, pk=intent_id)
+        delete_related_stories(intent, 'intent')
         intent.delete() 
 
         stories_delete_hook(project_id)
