@@ -65,7 +65,7 @@ class StoriesFile(APIView):
                     project=project
                 ))
 
-        Story.objects.bulk_create(stories)
+        bulk_update_unique(stories, 'name')
 
         return JsonResponse({'content': "File has been successfully uploaded"})
 
