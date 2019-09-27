@@ -114,32 +114,6 @@
         "model": "api.intent",
         "pk": 5,
         "fields": {
-            "name": "o_que_sei_falar",
-            "samples": [
-                "sobre o que você sabe falar",
-                "o que mais você sabe falar",
-                "quais assuntos você fala",
-                "o que você sabe ",
-                "lista de assuntos possiveis",
-                "quais as perguntas vc responde",
-                "quais as perquisar você responde",
-                "quero ajuda",
-                "meajuda",
-                "meajude",
-                "MEAJUD",
-                "MEAJDA",
-                "me ajuda",
-                "me ajude",
-                "ajuda eu",
-                "ajuda"
-            ],
-            "project": 1
-        }
-    },
-    {
-        "model": "api.intent",
-        "pk": 6,
-        "fields": {
             "name": "cumprimentar",
              "samples": [
                 "com licenca",
@@ -166,7 +140,7 @@
     },
     {
         "model": "api.intent",
-        "pk": 7,
+        "pk": 6,
         "fields": {
             "name": "negar",
              "samples": [
@@ -187,7 +161,7 @@
     },
     {
         "model": "api.intent",
-        "pk": 8,
+        "pk": 7,
         "fields": {
           "name": "o_que_sei_falar",
           "samples": [
@@ -216,7 +190,7 @@
 
     {
         "model": "api.intent",
-        "pk": 9,
+        "pk": 8,
         "fields": {
           "name": "quem_criou_a_tais",
           "samples": [
@@ -248,7 +222,7 @@
 
     {
         "model": "api.intent",
-        "pk": 10,
+        "pk": 9,
         "fields": {
           "name": "afirmar",
           "samples": [
@@ -279,7 +253,7 @@
     },
     {
         "model": "api.intent",
-        "pk": 11,
+        "pk": 10,
         "fields": {
           "name": "tem_wpp",
           "samples": [
@@ -313,7 +287,7 @@
     },
     {
         "model": "api.intent",
-        "pk": 12,
+        "pk": 11,
         "fields": {
           "name": "agradecimento",
           "samples": [
@@ -340,7 +314,7 @@
     },
     {
         "model": "api.intent",
-        "pk": 13,
+        "pk": 12,
         "fields": {
           "name": "contato",
           "samples": [
@@ -374,7 +348,7 @@
     },
     {
         "model": "api.intent",
-        "pk": 14,
+        "pk": 13,
         "fields": {
           "name": "endereco",
           "samples": [
@@ -542,7 +516,7 @@
         "model": "api.utter",
         "pk": 11,
         "fields": {
-            "name": "utter_elogios:",
+            "name": "utter_elogios",
             "multiple_alternatives": false,
             "alternatives":[ 
                 ["Obrigada! É sempre bom dar e receber elogios :P"]
@@ -568,7 +542,7 @@
         "model": "api.utter",
         "pk": 13,
         "fields": {
-            "name": "utter_o_que_sei_falar:",
+            "name": "utter_o_que_sei_falar",
             "multiple_alternatives": true,
             "alternatives":[ 
                 ["Veja alguns dos assuntos em que posso te ajudar :)"],
