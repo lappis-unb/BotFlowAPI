@@ -54,10 +54,10 @@ class StoriesFile(APIView):
             for story in stories_dicts:
                 content = []
                 for intent in story['intents']:
-                    content.append({"id": Intent.objects.get(name=intent['intent']).id, "type": "intent" })
+                    content.append({"id": Intent.objects.get(name=intent['intent']).id, "type": "intent", "name": intent['intent'] })
 
                     for utter in intent['utters']:
-                        content.append({"id": Utter.objects.get(name=utter.replace("utter_","")).id, "type": "utter" })
+                        content.append({"id": Utter.objects.get(name=utter).id, "type": "utter", "name": utter })
 
                 stories.append(Story(
                     name=story['story'],
@@ -141,7 +141,7 @@ class UttersFile(APIView):
                 alternatives = [x['text'].split("\n\n") for x in utters_list[utter_name]]
 
                 utters.append(Utter(
-                    name= utter_name.strip().replace("utter_",""),
+                    name= utter_name.strip(),
                     alternatives=[alternatives],
                     multiple_alternatives=True if len(alternatives) > 1 else False,
                     project=project
