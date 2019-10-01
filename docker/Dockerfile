@@ -19,5 +19,7 @@ COPY requirements.txt requirements.txt
 
 COPY runserver.sh runserver.sh
 
+COPY tox.ini tox.ini
+
 RUN pip3 install -r requirements.txt
 
