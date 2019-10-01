@@ -13,6 +13,10 @@ $ sudo docker-compose up --build
 
 After a small slice of time the django server will be ready at http://localhost:8000/api/v1/
 
+## Architecture
+All the persistent data is stored on a non relational database (mongo db), we choose this option because our data are like documents and make more sense store them as json.
+
+Our models are, `project, story, intent, utter`, a `project` is an abstraction for a new bot project that will be managed by the BotFlow, the other abstractions are like the normal terminologies of a rasa bot.
 
 ## Usage
 To download the bot-readable content files, send a GET request to:
