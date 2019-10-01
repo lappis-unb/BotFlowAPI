@@ -1,5 +1,5 @@
 # BotFlow API
-This repository is a Rest API for the BotFlow platform [https://github.com/lappis-unb/BotFlow](https://github.com/lappis-unb/BotFlow)
+This repository is a Rest API for the [BotFlow](https://github.com/lappis-unb/BotFlow).
 
 ## Get started
 We use [Docker](https://www.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/) for development environment. You only need this two tools to run this project.
