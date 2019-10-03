@@ -10,6 +10,7 @@ class Story(models.Model):
     project = models.EmbeddedModelField(
         model_container=Project
     )
+    is_checkpoint = models.BooleanField(default=False)
 
     objects = models.DjongoManager()
 
@@ -42,7 +43,7 @@ class StorySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Story
-        fields = ['id', 'name', 'content']
+        fields = ['id', 'name', 'content', 'is_checkpoint']
 
 class StoryListSerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
@@ -58,3 +59,28 @@ class StoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Story
         fields = ['id', 'name', 'content']
+
+
+class CheckpointSerializer(serializers.ModelSerializer):
+    content = serializers.SerializerMethodField()
+
+    def get_content(self, obj):
+        StorySerializer.get_example(self, obj)
+
+        return [{
+            'id': content['id'],
+            'name': content['name'],
+            'example': content['example'],
+            'type': content['type']
+        } for content in obj.content]
+
+    class Meta:
+        model = Story
+        fields = ['content']
+
+
+class CheckpointListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Story
+        fields = ['id', 'name']
