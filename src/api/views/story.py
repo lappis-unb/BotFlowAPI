@@ -45,7 +45,8 @@ class ListStories(APIView):
             story = Story.objects.create(
                 name="Default Name",
                 content=story_content_formatter(data['content']),
-                project=project
+                project=project,
+                is_checkpoint=data['is_checkpoint']
             )
             story.name = "Diálogo_{0}_{1}".format(story.project.name, story.id)
             story.save()

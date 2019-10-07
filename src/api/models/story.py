@@ -76,7 +76,7 @@ class CheckpointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Story
-        fields = ['content']
+        fields = ['name', 'content']
 
 
 class CheckpointListSerializer(serializers.ModelSerializer):
