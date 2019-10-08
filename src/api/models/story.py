@@ -18,24 +18,22 @@ class StorySerializer(serializers.ModelSerializer):
     content = serializers.SerializerMethodField()
 
     def get_example(self, obj):
-        intent_ids = [element['id'] for element in obj.content if element['type'] == 'intent']
-        intents = Intent.objects.filter(pk__in=intent_ids)
-
-        utter_ids = [element['id'] for element in obj.content if element['type'] == 'utter']
-        utters = Utter.objects.filter(pk__in=utter_ids)
-
-        elements = {}
-        elements['intent'] = intents
-        elements['utter'] = utters
-
-        field = {}
-        field['intent'] = 'samples'
-        field['utter'] = 'alternatives'
 
         for i, element in enumerate(obj.content):
-            element_obj = elements[element['type']].filter(pk=element['id']).first()
-            obj.content[i]['example'] = random.choice(getattr(element_obj, field[element['type']]))
-            obj.content[i]['name'] = getattr(element_obj, 'name')
+
+            if element['type'] == 'utter':
+                element_obj = Utter.objects.filter(pk=element['id']).first()
+                obj.content[i]['example'] = random.choice(getattr(element_obj, 'alternatives'))
+                obj.content[i]['name'] = getattr(element_obj, 'name')
+            elif element['type'] == 'intent':
+                element_obj = Intent.objects.filter(pk=element['id']).first()
+                obj.content[i]['example'] = random.choice(getattr(element_obj, 'samples'))
+                obj.content[i]['name'] = getattr(element_obj, 'name')
+            elif element['type'] == 'checkpoint':
+                element_obj = Story.objects.filter(pk=element['id']).first()
+                obj.content[i]['name'] = getattr(element_obj, 'name')
+
+
 
     def get_content(self, obj):
         self.get_example(obj)
@@ -76,7 +74,7 @@ class CheckpointSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Story
-        fields = ['name', 'content']
+        fields = ['id', 'name', 'content']
 
 
 class CheckpointListSerializer(serializers.ModelSerializer):
