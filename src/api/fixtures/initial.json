@@ -136,7 +136,7 @@
                 "salut"
            ],
            "project": 1
-        } 
+        }
     },
     {
         "model": "api.intent",
@@ -157,7 +157,7 @@
                 "jamais"
             ],
             "project": 1
-        } 
+        }
     },
     {
         "model": "api.intent",
@@ -380,7 +380,7 @@
     {
         "model": "api.utter",
         "pk": 1,
-  
+
         "fields": {
           "name": "utter_default",
           "multiple_alternatives": true,
@@ -436,8 +436,8 @@
           "pk": 5,
           "fields": {
               "name": "utter_tudo_bem",
-              "multiple_alternatives": false,          
-              "alternatives":[ 
+              "multiple_alternatives": false,
+              "alternatives":[
                   ["Tudo bem, obrigada! Em que posso te ajudar?"]
               ],
               "project": 1
@@ -449,9 +449,9 @@
           "fields": {
               "name": "utter_continuar_conversa",
               "multiple_alternatives": false,
-              "alternatives":[ 
+              "alternatives":[
                   [" E aí, qual nosso próximo assunto?"]
-  
+
               ],
               "project": 1
           }
@@ -462,20 +462,20 @@
         "fields": {
             "name": "utter_contato",
             "multiple_alternatives": false,
-            "alternatives":[ 
+            "alternatives":[
                 ["Para entrar em contato por meio do Suporte bastante acessar este link: lappis.rocks"]
 
             ],
             "project": 1
         }
-    }, 
+    },
     {
         "model": "api.utter",
         "pk": 8,
         "fields": {
             "name": "utter_endereco",
             "multiple_alternatives": false,
-            "alternatives":[ 
+            "alternatives":[
                 ["O Lappis fica na Universidade de Brasília, campus do Gama"]
 
             ],
@@ -488,7 +488,7 @@
         "fields": {
             "name": "utter_definicao",
             "multiple_alternatives": true,
-            "alternatives":[ 
+            "alternatives":[
                 ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura."],
                 ["Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas."],
                 ["Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou toda software livre :P"],
@@ -504,7 +504,7 @@
         "fields": {
             "name": "utter_quem_criou_a_tais",
             "multiple_alternatives": true,
-            "alternatives":[ 
+            "alternatives":[
                 ["Fui desenvolvida pelo LAPPIS (Laboratório Avançado de Produção Pesquisa e Inovação em Software) na Universidade de Brasília, um laboratório super inovador e descolado!"],
                 ["Se quiser me conhecer mais, acesse o meu projeto :) https://github.com/lappis-unb/tais"]
 
@@ -518,7 +518,7 @@
         "fields": {
             "name": "utter_elogios",
             "multiple_alternatives": false,
-            "alternatives":[ 
+            "alternatives":[
                 ["Obrigada! É sempre bom dar e receber elogios :P"]
 
             ],
@@ -531,7 +531,7 @@
         "fields": {
             "name": "utter_tem_wpp",
             "multiple_alternatives": false,
-            "alternatives":[ 
+            "alternatives":[
                 ["Eu não tenho wpp, eu só posso me comunicar com você aqui pelo portal, aqui é minha casa."]
 
             ],
@@ -544,7 +544,7 @@
         "fields": {
             "name": "utter_o_que_sei_falar",
             "multiple_alternatives": true,
-            "alternatives":[ 
+            "alternatives":[
                 ["Veja alguns dos assuntos em que posso te ajudar :)"],
                 ["Agora que você já sabe do que podemos conversar, vou te dar outras dicas..."],
                 ["Eu consigo te entender melhor quando você me faz perguntas curtas e me manda uma pergunta de cada vez."],
@@ -561,7 +561,7 @@
         "fields": {
             "name": "utter_menu",
             "multiple_alternatives": true,
-            "alternatives":[ 
+            "alternatives":[
                 ["Podemos conversar sobre como submeter um projeto, as etapas, algumas dúvidas operacionais…"],
                 ["Ou se você já tiver um projeto cadastrado, a gente pode falar sobre isso também."],
                 ["Para lembrar dos assuntos que eu domino, é só digitar: MEAJUDA"],
@@ -577,7 +577,7 @@
         "fields": {
             "name": "utter_agradecimento",
             "multiple_alternatives": true,
-            "alternatives":[ 
+            "alternatives":[
                 ["De nada, é sempre um prazer ajudar!"],
                 ["Qual o próximo assunto que te interessa?"]
 
@@ -591,7 +591,7 @@
         "fields": {
             "name": "utter_definicao_tais",
             "multiple_alternatives": false,
-            "alternatives":[ 
+            "alternatives":[
                 ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura.",
                 "Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas. Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou toda software livre :P",
                 "Em cada interação que temos aqui, eu aprendendo mais para que a gente se comunique melhor. Obrigada por conversar comigo!"]
@@ -605,7 +605,7 @@
         "fields": {
             "name": "utter_objetivo",
             "multiple_alternatives": false,
-            "alternatives":[ 
+            "alternatives":[
                 ["Mas antes, para a nossa conversa ser mais eficiente, você quer saber como submeter uma proposta?"]
             ],
             "project": 1
@@ -614,6 +614,7 @@
     {
         "model": "api.story",
         "pk": 1,
+        "is_checkpoint": true,
         "fields": {
             "content":[
                 {"type": "intent", "name": "quem_criou_a_tais"},
@@ -691,7 +692,8 @@
             "content":[
                 {"type": "intent", "name": "endereco"},
                 {"type": "utter", "name": "utter_endereco"},
-                {"type": "utter", "name": "utter_continuar_conversa"}
+                {"type": "utter", "name": "utter_continuar_conversa"},
+                {"type": "checkpoint", "name": "Diálogo_RasaBot_1" }
             ]
         }
     },
