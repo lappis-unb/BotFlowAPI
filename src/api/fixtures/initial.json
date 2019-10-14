@@ -614,8 +614,8 @@
     {
         "model": "api.story",
         "pk": 1,
-        "is_checkpoint": true,
         "fields": {
+            "is_checkpoint": true,
             "content":[
                 {"type": "intent", "name": "quem_criou_a_tais"},
                 {"type": "utter", "name": "utter_definicao_tais"},

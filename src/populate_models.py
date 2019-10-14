@@ -81,7 +81,7 @@ if Project.objects.count() < 1:
             story = Story.objects.create(
                 name="Default Name",
                 content=story_content_formatter(contents),
-                is_checkpoint= True if 'is_checkpoint' in each else False,
+                is_checkpoint= True if 'is_checkpoint' in each['fields'] else False,
                 project=Project.objects.all().first()
             )
             story.name = "Diálogo_{0}_{1}".format(story.project.name, story.id)
