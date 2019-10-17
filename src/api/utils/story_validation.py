@@ -6,6 +6,9 @@ def intent_exists(id):
 def utter_exists(id):
     return len(Utter.objects.filter(id=id)) > 0
 
+def checkpoint_exists(id):
+    return len(Story.objects.filter(id=id)) > 0
+
 def validate_content_keys(content):
     return 'id' in content and 'type' in content
 
@@ -23,7 +26,11 @@ def validate_content(content_array):
                 # validate utter
                 if not utter_exists(content['id']):
                     is_valid = False
-                    
+
+            elif content['type'] == 'checkpoint':
+                # validate checkpoint
+                if not checkpoint_exists(content['id']):
+                    is_valid = False
             else:
                 # invalid type
                 is_valid = False
@@ -52,4 +59,3 @@ def delete_related_stories(deleted_obj, type_str):
             for element in story.content:
                 if element['type'] == type_str and element['id'] == deleted_obj.id:
                     story.delete()
-        

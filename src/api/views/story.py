@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from api.models import Story, StorySerializer, Project, StoryListSerializer
+from api.models import Story, StorySerializer, Project, StoryListSerializer, CheckpointSerializer, CheckpointListSerializer
 from api.utils import request_to_dict, validate_content, story_content_formatter, validate_story, filter_content_by_name
 from api.webhook import stories_delete_hook, domain_delete_hook
 
@@ -16,13 +16,13 @@ class ListStories(APIView):
             story = get_object_or_404(Story, pk=story_id)
 
             return Response(StorySerializer(story).data)
-        
+
         project = get_object_or_404(Project, pk=project_id)
 
         name_filter = request.GET.get('filter') or ""
 
         stories = StoryListSerializer(
-            Story.objects.filter(project=project, ), 
+            Story.objects.filter(project=project, ),
             many=True
         ).data
 
@@ -33,19 +33,20 @@ class ListStories(APIView):
     def post(self, request, project_id=None, story_id=None, format=None):
         if not project_id:
             return Response(status=404)
-        
+
         data = request_to_dict(request)
 
         if not validate_story(data):
             return Response({'errors': ['Invalid data']}, status=400)
-        
+
         project = get_object_or_404(Project, pk=project_id)
 
         if validate_content(data['content']):
             story = Story.objects.create(
                 name="Default Name",
                 content=story_content_formatter(data['content']),
-                project=project
+                project=project,
+                is_checkpoint=data['is_checkpoint']
             )
             story.name = "Diálogo_{0}_{1}".format(story.project.name, story.id)
             story.save()
@@ -60,7 +61,7 @@ class ListStories(APIView):
         story_delete_hook(project_id)
         domain_delete_hook(project_id)
 
-        return Response(status=204)        
+        return Response(status=204)
 
     def put(self, request, project_id=None, story_id=None, format=None):
         story = get_object_or_404(Story, pk=story_id)
@@ -83,3 +84,24 @@ class ListStories(APIView):
             return Response(StorySerializer(story).data)
         else:
             return Response({'errors': ['Invalid content array']}, status=400)
+
+
+class ListCheckpoints(APIView):
+
+    def get(self, request, project_id=None, story_id=None, format=None):
+        if not project_id:
+            return Response(status=404)
+
+        if story_id:
+            story = get_object_or_404(Story, pk=story_id)
+
+            return Response(CheckpointSerializer(story).data)
+
+        project = get_object_or_404(Project, pk=project_id)
+
+        checkpoints = CheckpointListSerializer(
+            Story.objects.filter(project=project, is_checkpoint=True),
+            many=True
+        ).data
+
+        return Response(checkpoints)
