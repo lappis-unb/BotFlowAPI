@@ -50,7 +50,12 @@ class IntentParser:
     intent object.
     """
     def parse(self, intent: Intent):
-        name = f'## intent:{unidecode(intent.name)}\n'
+        intent_name = unidecode(intent.name)
+        if intent_name.startswith('synonym:'):
+            name = f'## {intent_name}\n'
+        else:
+            name = f'## intent:{intent_name}\n'
+            
         content = ''
 
         for s in intent.samples:
