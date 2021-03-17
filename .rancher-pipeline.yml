@@ -6,7 +6,7 @@ stages:
       buildContext: .
       tag: botflow-api:${CICD_EXECUTION_SEQUENCE}
       pushRemote: true
-      registry: registry.lappis.rocks
+     registry: registry.YOUR_DOMAIN
 - name: Deploy staging
   when:
     branch: devel

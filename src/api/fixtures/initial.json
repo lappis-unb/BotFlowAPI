@@ -218,7 +218,7 @@
         "model": "api.intent",
         "pk": 9,
         "fields": {
-          "name": "quem_criou_a_tais",
+          "name": "quem_a_criou",
           "samples": [
             "como você foi construida",
             "como voce foi construída",
@@ -232,10 +232,6 @@
             "quem te fez",
             "quem te produziu",
             "quem é seu pai",
-            "fez a tais",
-            "criou a tais",
-            "produziu a tais",
-            "desenvolveu a tais",
             "desenvolveu",
             "criou",
             "produziu",
@@ -320,9 +316,6 @@
             "perfeito muito agradecido",
             "obrigado tirou minhas duvidas",
             "obrigada por me ajudar",
-            "obrigado por me ajudar",
-            "obrigada, tais",
-            "obrigado, tais",
             "agradecido",
             "agradecida",
             "obrigada",
@@ -346,7 +339,6 @@
           "samples": [
             "eu ligo para quem para falar sobre o cadastro no salic",
             "algum telefone que eu possa entrar em contato",
-            "necessito de um telefone para falar sobre a lei rouanet",
             "pode me mandar um telefone para eu falar com alguma pessoa",
             "vc pode me mandar um telefone de alguém",
             "quero falar no telefone com alguém",
@@ -378,26 +370,23 @@
         "fields": {
           "name": "endereco",
           "samples": [
-            "quero saber o endereço da Secretaria Especial da Cultura",
-            "quero saber o endereco da Secretaria Especial da Cultura",
-            "como faço pra chegar na Secretaria Especial da Cultura",
-            "como faco pra chegar na Secretaria Especial da Cultura",
-            "qual o endereço da Secretaria Especial da Cultura",
-            "qual o endereco da Secretaria Especial da Cultura",
-            "me diz o endereço da Secretaria Especial da Cultura",
-            "me fala o endereço da Secretaria Especial da Cultura",
-            "endereço Secretaria Especial da Cultura",
-            "endereco Secretaria Especial da CUltura",
-            "qual o endereço do minc",
-            "qual o endereco do Minc",
-            "endereço Secretaria",
-            "endereco Secretaria",
             "qual endereço",
             "qual endereco",
-            "endereço minc",
-            "endereco minc",
             "endereço",
-            "endereco"
+            "endereco",
+            "onde voce mora",
+            "onde voce vive",
+            "onde voce habita",
+            "em que lugar voce vive",
+            "onde voce esta agora",
+            "voce mora no computador",
+            "voce vive na internet",
+            "onde vc esta",
+            "qual é o seu habitat",
+            "qual é o seu endereço",
+            "qual e o seu endereco",
+            "qual o seu endereço",
+            "qual o seu endereco"
           ],
 
         "project": 1
@@ -489,7 +478,7 @@
             "name": "utter_contato",
             "multiple_alternatives": false,
             "alternatives":[ 
-                ["Para entrar em contato por meio do Suporte bastante acessar este link: lappis.rocks"]
+                ["Para entrar em contato por meio do Suporte bastante acessar o meu repositório (https://github.com/lappis-unb/BotFlow) e abrir uma issue reportando o seu problema."]
 
             ],
             "project": 1
@@ -502,7 +491,7 @@
             "name": "utter_endereco",
             "multiple_alternatives": false,
             "alternatives":[ 
-                ["O Lappis fica na Universidade de Brasília, campus do Gama"]
+                ["Em algum lugar, muito, muito distante"]
 
             ],
             "project": 1
@@ -515,9 +504,9 @@
             "name": "utter_definicao",
             "multiple_alternatives": true,
             "alternatives":[ 
-                ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura."],
+                ["Eu sou uma assistente virtual, meu objetivo é tirar suas dúvidas."],
                 ["Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas."],
-                ["Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou toda software livre :P"],
+                ["Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou todo software livre :P"],
                 ["Em cada interação que temos aqui, eu aprendendo mais para que a gente se comunique melhor."],
                 ["Obrigada por conversar comigo!"]
             ],
@@ -528,11 +517,11 @@
         "model": "api.utter",
         "pk": 10,
         "fields": {
-            "name": "utter_quem_criou_a_tais",
+            "name": "utter_quem_a_criou",
             "multiple_alternatives": true,
             "alternatives":[ 
-                ["Fui desenvolvida pelo LAPPIS (Laboratório Avançado de Produção Pesquisa e Inovação em Software) na Universidade de Brasília, um laboratório super inovador e descolado!"],
-                ["Se quiser me conhecer mais, acesse o meu projeto :) https://github.com/lappis-unb/tais"]
+                ["Fui desenvolvida por desenvolvidores bem maneiros!"],
+                ["Na verdade, não me lembro. Quando acordei eles já não estavam mais aqui..."]
 
             ],
             "project": 1
@@ -615,11 +604,11 @@
         "model": "api.utter",
         "pk": 16,
         "fields": {
-            "name": "utter_definicao_tais",
+            "name": "utter_definicao",
             "multiple_alternatives": false,
             "alternatives":[ 
-                ["Eu sou uma assistente virtual da Secretaria Especial da Cultura, meu objetivo é tirar dúvidas sobre a Lei de Incentivo à Cultura.",
-                "Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas. Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou toda software livre :P",
+                ["Eu sou uma assistente virtual, meu objetivo é tirar suas dúvidas.",
+                "Uma assistente virtual é uma inteligência artificial criada para interagir com as pessoas. Para me comunicar com vocês utilizo algoritmos de aprendizagem profundo (deep learning) e sou todo software livre :P",
                 "Em cada interação que temos aqui, eu aprendendo mais para que a gente se comunique melhor. Obrigada por conversar comigo!"]
             ],
             "project": 1
@@ -642,8 +631,8 @@
         "pk": 1,
         "fields": {
             "content":[
-                {"type": "intent", "name": "quem_criou_a_tais"},
-                {"type": "utter", "name": "utter_definicao_tais"},
+                {"type": "intent", "name": "quem_a_criou"},
+                {"type": "utter", "name": "utter_definicao"},
                 {"type": "utter", "name": "utter_objetivo"}
             ]
         }
