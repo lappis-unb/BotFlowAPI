@@ -11,7 +11,7 @@ metadata:
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
 spec:
   rules:
-  - host: botflow-api.dev.lappis.rocks
+ - host: botflow-api.dev.YOUR_DOMAIN
     http:
       paths:
       - backend:
@@ -19,7 +19,7 @@ spec:
           servicePort: 80
   tls:
   - hosts:
-    - botflow-api.dev.lappis.rocks
+    - host: botflow-api.dev.YOUR_DOMAIN
     secretName: botflow-api-staging-letsencrypt-prod-crt
 ---
 apiVersion: v1
@@ -90,4 +90,3 @@ spec:
             secretKeyRef:
               name: botflow-api-staging
               key: mongo-database
-
