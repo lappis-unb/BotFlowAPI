@@ -22,12 +22,8 @@ jobs:
     - name: Lint with flake8 models
       run: |
         pip install flake8
-        flake8 --max-line-length=127 src/api/*.py
-      
-    - name: Lint with flake8 view
-      run: |
-        pip install flake8
         flake8 --max-line-length=127 src/**/*.py
+
     # - name: Django Testing project
     #   env:
     #     DATABASE_URL: ${{ secrets.DATABASE_URL }}
