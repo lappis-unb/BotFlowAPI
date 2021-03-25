@@ -1,0 +1,15 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout action
+        uses: actions/checkout@v2
+      - name: Django Coverage action
+        uses: actions/python-django-coverage-gitHub-action@0.9
+        with:
+          django-app: 'api'
+          minimum-coverage: '90'
