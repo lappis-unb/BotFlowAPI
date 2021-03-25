@@ -31,7 +31,7 @@ jobs:
       MONGO_INITDB_ROOT_PASSWORD: dev
       MONGO_INITDB_DATABASE: botflowapi
     services:
-        mongodb:
+        MONGO_DATABASE:
           image: mongo
           ports: ["27017:27017"]
     runs-on: ubuntu-latest
