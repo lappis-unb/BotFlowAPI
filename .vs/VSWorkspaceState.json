@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\api",
+    "\\src\\api\\models",
+    "\\src\\api\\views",
+    "\\src\\tests"
+  ],
+  "SelectedNode": "\\src\\api\\views\\files.py",
+  "PreviewInSolutionExplorer": false
+}
