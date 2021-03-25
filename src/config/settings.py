@@ -46,7 +46,7 @@ EXTERNAL_APPS = [
 ]
 
 LOCAL_APPS = [
-    'api'
+    'api',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + EXTERNAL_APPS + LOCAL_APPS
@@ -79,6 +79,10 @@ TEMPLATES = [
         },
     },
 ]
+
+REST_FRAMEWORK = {
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
+}
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
