@@ -26,6 +26,14 @@ jobs:
         flake8 --max-line-length=127 src/**/**/*.py
 
   test:
+    env:
+      MONGO_INITDB_ROOT_USERNAME: dev
+      MONGO_INITDB_ROOT_PASSWORD: dev
+      MONGO_INITDB_DATABASE: botflowapi
+    services:
+        mongodb:
+          image: mongo
+          ports: ["27017:27017"]
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 4
