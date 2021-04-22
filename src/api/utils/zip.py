@@ -18,8 +18,7 @@ def save_dict_into_files(files_dict, folder):
             filenames.append(new_file)
     return filenames
 
-def get_zipped_files(project, files_dict):
-    # Prepare folder to save files
+def create_file_folder(project):
     to_create = os.path.join(tmp_dir, str(project.id))
     
     try:
@@ -27,18 +26,22 @@ def get_zipped_files(project, files_dict):
     except FileExistsError:
         pass
 
-    files_folder = os.path.join(tmp_dir, str(project.id))
+    return to_create
+
+def create_timestamp():
+    delta = timedelta(hours=-3)
+    fuso = timezone(delta)
+    now = datetime.now().astimezone(fuso)
+
+    return now.strftime('%d-%m-%Y_%H-%M')
+    
+def get_zipped_files(project, files_dict):
+    files_folder = create_file_folder(project)
     
     # Generate and save files into folder
     filenames = save_dict_into_files(files_dict, files_folder)
 
-    # Get files and zip
-    delta = timedelta(hours=-3)
-    fuso = timezone(delta)
-    now = datetime.now().astimezone(fuso)
-    time_stamp = now.strftime('%d-%m-%Y_%H-%M')
-
-    zip_filename = "{0}_{1}.zip".format(project.name, time_stamp)
+    zip_filename = "{0}_{1}.zip".format(project.name, create_timestamp())
 
     zip_path = os.path.join(tmp_dir, zip_filename)
 
