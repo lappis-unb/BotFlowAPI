@@ -56,3 +56,15 @@ def get_zipped_files(project, files_dict):
 
     return zip_filename, zip_path
 
+def parser_iterator (elements, parser_function):
+
+        if not elements:
+            raise Http404
+
+        element_parser = parser_function
+        element_markdown_str = ''
+
+        for element in elements:
+            element_markdown_str += element_parser.parse(element)
+
+        return element_markdown_str
