@@ -6,7 +6,7 @@ from django.utils.encoding import smart_str
 
 from api.models import Project, Story, Intent
 from api.parser import StoryParser, IntentParser, DomainParser
-from api.utils import get_zipped_files
+from api.utils import get_zipped_files, parser_iterator
 
 import os
 
@@ -22,14 +22,7 @@ class StoriesFile(APIView):
         project = get_object_or_404(Project, pk=project_id)
         stories = Story.objects.filter(project=project)
         
-        if not stories:
-            raise Http404
-        
-        parser = StoryParser()
-        markdown_str = ''
-
-        for story in stories:
-            markdown_str += parser.parse(story)
+        markdown_str = parser_iterator(stories, StoryParser())
         
         return JsonResponse({'content': markdown_str})  
 
@@ -44,15 +37,8 @@ class IntentsFile(APIView):
     def get(self, request, project_id):
         project = get_object_or_404(Project, pk=project_id)
         intents = Intent.objects.filter(project=project)
-
-        if not intents:
-            raise Http404
-
-        parser = IntentParser()
-        markdown_str = ''
-
-        for intent in intents:
-            markdown_str += parser.parse(intent)
+        
+        markdown_str = parser_iterator(intents, IntentParser())
 
         return JsonResponse({'content': markdown_str})
 
@@ -77,25 +63,8 @@ class ZipFile(APIView):
         intents = Intent.objects.filter(project=project)
         stories = Story.objects.filter(project=project)
 
-        # Intent parsing
-        if not intents:
-            raise Http404
-
-        intent_parser = IntentParser()
-        intent_markdown_str = ''
-
-        for intent in intents:
-            intent_markdown_str += intent_parser.parse(intent)
-
-        # Story parsing
-        if not stories:
-            raise Http404
-        
-        stories_parser = StoryParser()
-        stories_markdown_str = ''
-
-        for story in stories:
-            stories_markdown_str += stories_parser.parse(story)
+        intent_markdown_str = parser_iterator(intents, IntentParser())
+        stories_markdown_str = parser_iterator(stories, StoryParser())
 
         # Domain parsing
         domain_parser = DomainParser()
